@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+/* ヘッダー */
+.flex-col-area {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+nav {
+  background-color: #deb887;
+}
+
+.logo {
+  font: Bold 22px Source Han Sans JP;
+  letter-spacing: 0;
+  color: #ffffff;
+  opacity: 1;
+}
+
+.nav-item a {
+  text-align: left;
+  font: W3 25px/43px Hiragino Kaku Gothic ProN;
+  letter-spacing: 0;
+  color: #707070;
+  opacity: 1;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+ul {
+  list-style: none;
+}
+
+/* フッター */
+footer {
+  background-color: #deb887;
+}
+
+.footer-font {
+  color: #707070;
+  margin-top: auto;
+  width: 100%;
+  height: 60px;
+}
