@@ -48,45 +48,43 @@ connectDb();
         </ul>
       </div>
     </nav>
-  </div>
-  <!-- ここまでヘッダー -->
 
-  <!-- ここからメイン -->
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-9 col-md-7 col-lg mx-auto">
-        <div class="card card-signin my-5 bg-light">
-          <form action="sign_up.php" method="post">
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input type="name" name="name" required>
-            </div>
-            <div class="form-group">
-              <label for="email">Mail Address</label>
-              <input type="email" name="email" required>
-            </div>
-            <div class="form-group">
-              <label for="password">password</label>
-              <input type="password" name="password" required>
-            </div>
-            <div class="form-group">
-              <label for="imgae">Profile Image</label>
-              <input type="file" name="image" required>
-            </div>
-            <input type="submit" value="">
-          </form>
-        </div>
+    <!-- ここからメイン -->
+    <div class="container">
+      <div class="row">
+        <form action="sign_up.php" method="post">
+          <ul>
+            <li>
+              <label for="name" class="label-name">User Name</label>
+              <input type="name" name="name" placeholder="ユーザー名をしてください" required class="form-create">
+            </li>
+            <li>
+              <label for="email" class="label-name">Mail Address</label>
+              <input type="email" name="email" placeholder="メールアドレスを入力してください" required class="form-create">
+            </li>
+            <li>
+              <label for="password" class="label-name">password</label>
+              <input type="password" name="password" placeholder="パスワードを入力してください" required class="form-create">
+            </li>
+            <li>
+              <label for="imgae" class="label-name">Profile Image</label>
+              <input type="file" name="image" required class="form-create">
+            </li>
+            <li>
+              <input type="submit" value="Create Account">
+            </li>
+          </ul>
+        </form>
       </div>
     </div>
 
-    <!-- ここはフッター -->
+    <!-- ここからフッター -->
     <footer class="footer font-small">
       <div class="footer-copyright text-center py-3 footer-font">
         &copy;Copyright © 2020 KleidunG.All rights reserved
       </div>
     </footer>
-    <!-- ここまでフッター -->
-
+  </div>
 </body>
 
 </html>

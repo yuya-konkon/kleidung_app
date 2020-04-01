@@ -46,3 +46,11 @@ footer {
   width: 100%;
   height: 60px;
 }
+
+/* アカウント登録画面 */}
+
+.form-create {
+  width: 350px;
+  margin-left: 100px;
+  float: right;
+}
