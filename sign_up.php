@@ -50,7 +50,7 @@ connectDb();
     </nav>
 
     <!-- ここからメイン -->
-    <div class="container">
+    <div class="container CA-form">
       <div class="row">
         <form action="sign_up.php" method="post">
           <ul>
@@ -67,8 +67,10 @@ connectDb();
               <input type="password" name="password" placeholder="パスワードを入力してください" required class="form-create">
             </li>
             <li>
-              <label for="imgae" class="label-name">Profile Image</label>
-              <input type="file" name="image" required class="form-create">
+              <label for="image" class="label-name">
+                Profile Image
+                <input type="file" name="image" required class="form-create image-btn" id="image">
+              </label>
             </li>
             <li>
               <input type="submit" value="Create Account">

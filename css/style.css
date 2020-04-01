@@ -47,10 +47,28 @@ footer {
   height: 60px;
 }
 
-/* アカウント登録画面 */}
+/* アカウント登録画面 */
+
+.CA-form {
+  margin: auto;
+}
+
+.label-name {
+  margin-bottom: 100px;
+  color: #707f89;
+}
 
 .form-create {
   width: 350px;
   margin-left: 100px;
   float: right;
+  color: #707f89;
+}
+
+.image-btn {
+  cursor: pointer;
+  display: inline-block;
+}
+label input {
+  display: none;
 }
