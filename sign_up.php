@@ -52,28 +52,28 @@ connectDb();
     <!-- ここからメイン -->
     <div class="container CA-form">
       <div class="row">
-        <form action="sign_up.php" method="post">
+        <form action="sign_up.php" method="post" class="CA-form">
           <ul>
             <li>
               <label for="name" class="label-name">User Name</label>
-              <input type="name" name="name" placeholder="ユーザー名をしてください" required class="form-create">
+              <input type="name" name="name" placeholder="ユーザー名をしてください" required class="CAF-item">
             </li>
             <li>
               <label for="email" class="label-name">Mail Address</label>
-              <input type="email" name="email" placeholder="メールアドレスを入力してください" required class="form-create">
+              <input type="email" name="email" placeholder="メールアドレスを入力してください" required class="CAF-item">
             </li>
             <li>
               <label for="password" class="label-name">password</label>
-              <input type="password" name="password" placeholder="パスワードを入力してください" required class="form-create">
+              <input type="password" name="password" placeholder="パスワードを入力してください" required class="CAF-item">
             </li>
             <li>
               <label for="image" class="label-name">
                 Profile Image
-                <input type="file" name="image" required class="form-create image-btn" id="image">
+                <input type="file" name="image" required class="CAF-item image-btn" id="image">
               </label>
             </li>
             <li>
-              <input type="submit" value="Create Account">
+              <input type="submit" value="Create Account" class="CA-btn" >
             </li>
           </ul>
         </form>
