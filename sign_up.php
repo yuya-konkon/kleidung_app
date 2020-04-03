@@ -120,6 +120,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container CA-form">
       <div class="row">
         <form action="sign_up.php" method="post" class="CA-form">
+          <?php if ($errors) : ?>
+            <ul class="alert alert-danger">
+              <?php foreach ($errors as $error) : ?>
+                <li><?php echo $error; ?></li>
+              <?php endforeach; ?>
+            </ul>
+          <?php endif; ?>
           <ul>
             <li>
               <label for="name" class="label-name">User Name</label>
