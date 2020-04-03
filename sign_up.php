@@ -3,7 +3,74 @@
 require_once('config.php');
 require_once('functions.php');
 
-connectDb();
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  $user_name = $_POST['name'];
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  $picture = $_POST['picture'];
+
+  $errors = [];
+
+  if ($user_name == '') {
+    $errors[] = 'User Name が未入力です。';
+  }
+
+  if ($email == '') {
+    $errors[] = 'Mail Address が未入力です。';
+  }
+
+  if ($password == '') {
+    $errors[] = 'Password が未入力です。';
+  }
+
+  if ($picture == '') {
+    $errors[] = 'Profile Image が選択されていません';
+  }
+
+  // メールアドレスがかぶっていないかの確認
+  $dbh = connectDb();
+  $sql = 'SELECT * FROM users WHERE email = :email';
+  $stmt = $dbh->prepare($sql);
+  $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+  $stmt->execute();
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if ($user) {
+    $errors[] = '既に使用されているメールアドレスです';
+  }
+
+  if (empty($errors)) {
+    $sql = <<<SQL
+    INSERT INTO
+    users
+  (
+    email,
+    user_name,
+    password,
+    picture
+  )
+    VALUES
+  (
+    :email,
+    :user_name,
+    :password,
+    :picture
+  )
+  SQL;
+    $stmt = $dbh->prepare($sql);
+
+    $stmt->bindParam(':email', $email, PDO::FETCH_ASSOC);
+    $stmt->bindParam(':user_name', $user_name, PDO::FETCH_ASSOC);
+    $pw_hash = password_hash($password, PASSWORD_DEFAULT);
+    $stmt->bindParam(':password', $pw_hash);
+    $stmt->bindParam(':picture', $picture, PDO::FETCH_ASSOC);
+
+    $stmt->execute();
+
+    header('Location: login.php');
+    exit;
+  }
+}
 
 
 ?>
@@ -48,45 +115,52 @@ connectDb();
         </ul>
       </div>
     </nav>
-  </div>
-  <!-- ここまでヘッダー -->
 
-  <!-- ここからメイン -->
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-9 col-md-7 col-lg mx-auto">
-        <div class="card card-signin my-5 bg-light">
-          <form action="sign_up.php" method="post">
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input type="name" name="name" required>
-            </div>
-            <div class="form-group">
-              <label for="email">Mail Address</label>
-              <input type="email" name="email" required>
-            </div>
-            <div class="form-group">
-              <label for="password">password</label>
-              <input type="password" name="password" required>
-            </div>
-            <div class="form-group">
-              <label for="imgae">Profile Image</label>
-              <input type="file" name="image" required>
-            </div>
-            <input type="submit" value="">
-          </form>
-        </div>
+    <!-- ここからメイン -->
+    <div class="container CA-form">
+      <div class="row">
+        <form action="sign_up.php" method="post" class="CA-form">
+          <?php if ($errors) : ?>
+            <ul class="alert alert-danger">
+              <?php foreach ($errors as $error) : ?>
+                <li><?php echo $error; ?></li>
+              <?php endforeach; ?>
+            </ul>
+          <?php endif; ?>
+          <ul>
+            <li>
+              <label for="name" class="label-name">User Name</label>
+              <input type="name" name="name" placeholder="ユーザー名をしてください" required class="CAF-item">
+            </li>
+            <li>
+              <label for="email" class="label-name">Mail Address</label>
+              <input type="email" name="email" placeholder="メールアドレスを入力してください" required class="CAF-item">
+            </li>
+            <li>
+              <label for="password" class="label-name">Password</label>
+              <input type="password" name="password" placeholder="パスワードを入力してください" required class="CAF-item">
+            </li>
+            <li>
+              <label for="picture" class="label-name">
+                Profile Image
+                <input type="file" name="picture" required class="CAF-item image-btn" id="picture">
+              </label>
+            </li>
+            <li>
+              <input type="submit" value="Create Account" class="CA-btn">
+            </li>
+          </ul>
+        </form>
       </div>
     </div>
 
-    <!-- ここはフッター -->
+    <!-- ここからフッター -->
     <footer class="footer font-small">
       <div class="footer-copyright text-center py-3 footer-font">
         &copy;Copyright © 2020 KleidunG.All rights reserved
       </div>
     </footer>
-    <!-- ここまでフッター -->
-
+  </div>
 </body>
 
 </html>
