@@ -3,7 +3,76 @@
 require_once('config.php');
 require_once('functions.php');
 
-connectDb();
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  $user_name = $_POST['name'];
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  $picture = $_POST['picture'];
+
+  $errors = [];
+
+  if ($user_name == '') {
+    $errors[] = 'User Name が未入力です。';
+  }
+
+  if ($email == '') {
+    $errors[] = 'Mail Address が未入力です。';
+  }
+
+  if ($password == '') {
+    $errors[] = 'Password が未入力です。';
+  }
+
+  if ($picture == '') {
+    $errors[] = 'Profile Image が選択されていません';
+  }
+
+  // メールアドレスがかぶっていないかの確認
+  $dbh = connectDb();
+  $sql = 'SELECT * FROM users WHERE email = :email';
+  $stmt = $dbh->prepare($sql);
+  $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+  $stmt->execute();
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if ($user) {
+    $errors[] = '既に使用されているメールアドレスです';
+  }
+
+  if (empty($errors)) {
+    $sql = <<<SQL
+    INSERT INTO
+    users
+  (
+    email,
+    user_name,
+    password,
+    picture
+  )
+    VALUES
+  (
+    :email,
+    :user_name,
+    :password,
+    :picture
+  )
+  SQL;
+    $stmt = $dbh->prepare($sql);
+
+    $stmt->bindParam(':email', $email, PDO::FETCH_ASSOC);
+    $stmt->bindParam(':user_name', $user_name, PDO::FETCH_ASSOC);
+    $pw_hash = password_hash($password, PASSWORD_DEFAULT);
+    $stmt->bindParam(':password', $pw_hash);
+    $stmt->bindParam(':picture', $picture, PDO::FETCH_ASSOC);
+
+    $stmt->execute();
+
+    echo $user_name;
+
+    // header('Location: login.php');
+    // exit;
+  }
+}
 
 
 ?>
@@ -63,17 +132,17 @@ connectDb();
               <input type="email" name="email" placeholder="メールアドレスを入力してください" required class="CAF-item">
             </li>
             <li>
-              <label for="password" class="label-name">password</label>
+              <label for="password" class="label-name">Password</label>
               <input type="password" name="password" placeholder="パスワードを入力してください" required class="CAF-item">
             </li>
             <li>
-              <label for="image" class="label-name">
+              <label for="picture" class="label-name">
                 Profile Image
-                <input type="file" name="image" required class="CAF-item image-btn" id="image">
+                <input type="file" name="picture" required class="CAF-item image-btn" id="picture">
               </label>
             </li>
             <li>
-              <input type="submit" value="Create Account" class="CA-btn" >
+              <input type="submit" value="Create Account" class="CA-btn">
             </li>
           </ul>
         </form>
