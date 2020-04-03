@@ -67,10 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $stmt->execute();
 
-    echo $user_name;
-
-    // header('Location: login.php');
-    // exit;
+    header('Location: login.php');
+    exit;
   }
 }
 
