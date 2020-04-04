@@ -5,6 +5,7 @@ require_once('functions.php');
 
 connectDb();
 
+session_start();
 
 ?>
 
