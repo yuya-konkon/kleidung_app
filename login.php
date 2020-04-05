@@ -1,9 +1,10 @@
 <?php
 
-require_once('config.php');
 require_once('functions.php');
+require_once('users.php');
 
 session_start();
+
 $dbh = connectDb();
 
 if ($_SESSION['id']) {
@@ -12,38 +13,18 @@ if ($_SESSION['id']) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $email = $_POST['email'];
-  $password = $_POST['password'];
+  LoginChk($_POST);
 
-  $errors = [];
-
-  if ($email == '') {
-    $errors[] = 'Mail Address が未入力です。';
+  if (password_verify($password, $user['password'])) {
+    $_SESSION['id'] = $user['id'];
+    $url = $_SERVER['HTTP_REFERE'];
+    header('Location: ' . $url);
+    exit;
+  } else {
+    $errors[] = 'メールアドレスかパスワードが間違っています';
   }
-
-  if ($password == '') {
-    $errors[] = 'Password が未入力です。';
-  }
-
-  if (empty($errors)) {
-    $sql = 'SELECT * FROM users WHERE email = :email';
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-    $stmt->execute();
-
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (password_verify($password, $user['password'])) {
-      $_SESSION['id'] = $user['id'];
-      $url = $_SERVER['HTTP_REFERE'];
-      header('Location: ' . $url);
-      exit;
-    } else {
-      $errors[] = 'メールアドレスかパスワードが間違っています';
-    }
-  }
-
 }
+
 
 ?>
 

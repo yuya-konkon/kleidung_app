@@ -33,10 +33,10 @@ session_start();
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
           <?php if ($_SESSION['id']) : ?>
             <li class="nav-item">
-              <a href="log_out.php">ここに写真</a>
+              <a href="new.php">ここにプラス</a>
             </li>
             <li class="nav-item">
-              <a href="new.php">ここにぷらす</a>
+              <a href="pofile.php">ここに写真</a>
             </li>
           <?php else : ?>
             <li class="nav-item">
