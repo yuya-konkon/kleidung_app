@@ -82,3 +82,29 @@ function insertUser($user_param)
     $stmt->execute();
   }
 }
+
+// ログイン
+function LoginChk($user_param)
+{
+  $email = $user_param['email'];
+  $password = $user_param['password'];
+  $dbh = connectDb();
+  $errors = [];
+
+  if ($email == '') {
+    $errors[] = 'Mail Address が未入力です。';
+  }
+
+  if ($password == '') {
+    $errors[] = 'Password が未入力です。';
+  }
+
+  if (empty($errors)) {
+    $sql = 'SELECT * FROM users WHERE email = :email';
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+}
