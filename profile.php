@@ -1,9 +1,25 @@
 <?php
 
+require_once('config.php');
 require_once('functions.php');
 require_once('users.php');
 
 session_start();
+
+if (empty($_SESSION['id'])) {
+  header('Location: login.php');
+  exit;
+}
+
+// ユーザー情報の取得
+// $user = getPostFindById($id);
+$dbh = connectDB();
+// ヒアドキュメント <<<でSQLと同じ文字出てくるまで1つなぎとする
+$sql = "SELECT* FROM users WHERE id = :id";
+$stmt = $dbh->prepare($sql);
+$stmt->bindParam(':id', $_SESSION['id'], PDO::PARAM_INT);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -48,6 +64,29 @@ session_start();
       </div>
     </nav>
 
+    <div class="container">
+      <div class="left">
+        <!-- 左側 -->
+        <div class="image"><img src="<?php echo h($user['picture'], ENT_QUOTES ); ?>">
+          表示できないので家で本見る
+        </div>
+        <div class="name">
+          <?php echo h($user['user_name']); ?>
+        </div>
+        <div class="description">
+          <?php echo h($user['description']); ?>
+        </div>
+        <div class="edit">
+          <a href="edit-btn">Edit Profile</a>
+        </div>
+        <div class="edit">
+          <a href="logout.php" class="loguot-btn">Logout</a>
+        </div>
+      </div>
+      <div class="contents">
+        <!-- 右側 -->
+      </div>
+    </div>
 
     <!-- ここからフッター -->
     <footer class="footer font-small">

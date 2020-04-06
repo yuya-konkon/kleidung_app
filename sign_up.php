@@ -5,17 +5,80 @@ require_once('functions.php');
 require_once('users.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  ChkUser($_POST);
+  $user_name = $_POST['name'];
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  $image = $_FILES['image']['name'];
 
-  ChkEmail($_POST);
+
+  $errors = [];
+
+  if ($user_name == '') {
+    $errors[] = 'User Name が未入力です。';
+  }
+
+  if ($email == '') {
+    $errors[] = 'Mail Address が未入力です。';
+  }
+
+  if ($password == '') {
+    $errors[] = 'Password が未入力です。';
+  }
+
+  $dbh = connectDb();
+  $sql = 'SELECT * FROM users WHERE email = :email';
+  $stmt = $dbh->prepare($sql);
+  $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+  $stmt->execute();
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if ($user) {
+    $errors[] = '既にメールアドレスが登録されています';
+  }
+
+  if ($image) {
+    $ext = substr($image, -3);
+    if($ext != 'jpg' && $ext != 'png' && $ext != 'heic') {
+      $errors[] = '画像ファイルは jpg png heic のいずれかを選択してください。';
+    }
+  }
 
   if (empty($errors)) {
-    insertUser($_POST);
-    header('Location: login.php');
+    $sql = <<<SQL
+    INSERT INTO
+    users
+  (
+    email,
+    user_name,
+    password,
+    image
+  )
+    VALUES
+  (
+    :email,
+    :user_name,
+    :password,
+    :image
+  )
+  SQL;
+    $stmt = $dbh->prepare($sql);
+
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->bindParam(':user_name', $user_name, PDO::PARAM_STR);
+    $pw_hash = password_hash($password, PASSWORD_DEFAULT);
+    $stmt->bindParam(':password', $pw_hash);
+    $stmt->bindParam(':image', $image, PDO::PARAM_STR);
+
+    $stmt->execute();
+
+    $profileImage = date('YmdHis') . $image;
+    move_uploaded_file($_FILES['image']['tmp_name'], 'user_image/' . $profileImage);
+    $_SESSION['join']['image'] = $profileImage;
+
+    header('Location: sign_in.php');
     exit;
   }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -62,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- ここからメイン -->
     <div class="container CA-form">
       <div class="row">
-        <form action="sign_up.php" method="post" class="CA-form">
+        <form action="sign_up.php" method="post" class="CA-form" enctype="multipart/form-data">
           <?php if ($errors) : ?>
             <ul class="alert alert-danger">
               <?php foreach ($errors as $error) : ?>
@@ -84,9 +147,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               <input type="password" name="password" placeholder="パスワードを入力してください" required class="CAF-item">
             </li>
             <li>
-              <label for="picture" class="label-name">
+              <label for="image" class="label-name">
                 Profile Image
-                <input type="file" name="picture" required class="CAF-item image-btn" id="picture">
+                <input type="file" name="image" required class="CAF-item image-btn" id="image">
               </label>
             </li>
             <li>

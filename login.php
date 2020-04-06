@@ -13,18 +13,36 @@ if ($_SESSION['id']) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  LoginChk($_POST);
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  $dbh = connectDb();
+  $errors = [];
 
-  if (password_verify($password, $user['password'])) {
-    $_SESSION['id'] = $user['id'];
-    $url = $_SERVER['HTTP_REFERE'];
-    header('Location: ' . $url);
-    exit;
-  } else {
-    $errors[] = 'メールアドレスかパスワードが間違っています';
+  if ($email == '') {
+    $errors[] = 'Mail Address が未入力です。';
+  }
+
+  if ($password == '') {
+    $errors[] = 'Password が未入力です。';
+  }
+
+  if (empty($errors)) {
+    $sql = 'SELECT * FROM users WHERE email = :email';
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->execute();
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (password_verify($password, $user['password'])) {
+      $_SESSION['id'] = $user['id'];
+      header('Location: index.php');
+      exit;
+    } else {
+      $errors[] = 'メールアドレスかパスワードが間違っています';
+    }
   }
 }
-
 
 ?>
 
@@ -83,11 +101,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <ul>
             <li>
               <label for="email" class="label-name">Mail Address</label>
-              <input type="email" class="CAF-item" required name="email" placeholder="Mail Addressを入力">
+              <input type="email" class="CAF-item" required name="email" placeholder="Mail Address">
             </li>
             <li>
               <label for="password" class="label-name">Password</label>
-              <input type="password" class="CAF-item" required name="password" placeholder="Passwordを入力">
+              <input type="password" class="CAF-item" required name="password" placeholder="Password">
             </li>
             <li>
               <input type="submit" value="Create Account" class="login-btn">

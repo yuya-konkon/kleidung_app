@@ -5,29 +5,7 @@ require_once('config.php');
 
 function ChkUser($user_param)
 {
-  $user_name = $user_param['name'];
-  $email = $user_param['email'];
-  $password = $user_param['password'];
-  $picture = $user_param['picture'];
-
-  $errors = [];
-
-  if ($user_name == '') {
-    $errors[] = 'User Name が未入力です。';
-  }
-
-  if ($email == '') {
-    $errors[] = 'Mail Address が未入力です。';
-  }
-
-  if ($password == '') {
-    $errors[] = 'Password が未入力です。';
-  }
-
-  if ($picture == '') {
-    $errors[] = 'Profile Image が選択されていません';
-  }
-  return $errors;
+  
 }
 
 function ChkEmail()
@@ -50,7 +28,7 @@ function insertUser($user_param)
   $user_name = $user_param['name'];
   $email = $user_param['email'];
   $password = $user_param['password'];
-  $picture = $user_param['picture'];
+  $image = $user_param['image'];
   $dbh = connectDb();
 
   if (empty($errors)) {
@@ -61,14 +39,14 @@ function insertUser($user_param)
     email,
     user_name,
     password,
-    picture
+    image
   )
     VALUES
   (
     :email,
     :user_name,
     :password,
-    :picture
+    :image
   )
   SQL;
     $stmt = $dbh->prepare($sql);
@@ -77,7 +55,7 @@ function insertUser($user_param)
     $stmt->bindParam(':user_name', $user_name, PDO::FETCH_ASSOC);
     $pw_hash = password_hash($password, PASSWORD_DEFAULT);
     $stmt->bindParam(':password', $pw_hash);
-    $stmt->bindParam(':picture', $picture, PDO::FETCH_ASSOC);
+    $stmt->bindParam(':image', $image, PDO::FETCH_ASSOC);
 
     $stmt->execute();
   }
@@ -107,4 +85,15 @@ function LoginChk($user_param)
 
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
+}
+
+function getPostFindById($id)
+{
+  $dbh = connectDB();
+  // ヒアドキュメント <<<でSQLと同じ文字出てくるまで1つなぎとする
+  $sql = "SELECT* FROM users WHERE id = :id";
+  $stmt = $dbh->prepare($sql);
+  $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+  $stmt->execute();
+  return $stmt->fetch(PDO::FETCH_ASSOC);
 }
