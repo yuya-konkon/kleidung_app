@@ -19,13 +19,21 @@ nav {
 }
 
 .nav-item a {
-  text-align: left;
-  font: W3 25px/43px Hiragino Kaku Gothic ProN;
   letter-spacing: 0;
   color: #707070;
-  opacity: 1;
-  padding-right: 0.5rem;
-  padding-left: 0.5rem;
+  padding: 0.5rem;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.nav-image {
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+}
+
+.new-post {
+  margin-top: 10px;
 }
 
 ul {
@@ -110,7 +118,7 @@ footer {
 
 .edit-btn {
   margin-top: 200px;
-  background: #CDD6DD;
+  background: #cdd6dd;
   width: 150px;
   padding: 15px 0;
   font-size: 15px;
