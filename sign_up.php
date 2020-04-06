@@ -2,7 +2,6 @@
 
 require_once('config.php');
 require_once('functions.php');
-require_once('users.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $user_name = $_POST['name'];
@@ -44,38 +43,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 
   if (empty($errors)) {
+    $profileImage = date('YmdHis') . $image;
+    move_uploaded_file($_FILES['image']['tmp_name'], 'user_image/' . $profileImage);
+    $_SESSION['join']['image'] = $profileImage;
+
     $sql = <<<SQL
     INSERT INTO
     users
-  (
-    email,
-    user_name,
-    password,
-    image
-  )
-    VALUES
-  (
-    :email,
-    :user_name,
-    :password,
-    :image
-  )
-  SQL;
+    (
+      email,
+      user_name,
+      password,
+      image
+    )
+      VALUES
+    (
+      :email,
+      :user_name,
+      :password,
+      :profileImage
+    )
+    SQL;
     $stmt = $dbh->prepare($sql);
 
     $stmt->bindParam(':email', $email, PDO::PARAM_STR);
     $stmt->bindParam(':user_name', $user_name, PDO::PARAM_STR);
     $pw_hash = password_hash($password, PASSWORD_DEFAULT);
     $stmt->bindParam(':password', $pw_hash);
-    $stmt->bindParam(':image', $image, PDO::PARAM_STR);
+    $stmt->bindParam(':profileImage', $profileImage, PDO::PARAM_STR);
 
     $stmt->execute();
 
-    $profileImage = date('YmdHis') . $image;
-    move_uploaded_file($_FILES['image']['tmp_name'], 'user_image/' . $profileImage);
-    $_SESSION['join']['image'] = $profileImage;
-
-    header('Location: sign_in.php');
+    header('Location: login.php');
     exit;
   }
 }

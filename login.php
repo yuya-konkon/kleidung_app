@@ -1,7 +1,7 @@
 <?php
 
+require_once('config.php');
 require_once('functions.php');
-require_once('users.php');
 
 session_start();
 
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <input type="password" class="CAF-item" required name="password" placeholder="Password">
             </li>
             <li>
-              <input type="submit" value="Create Account" class="login-btn">
+              <input type="submit" value="Login" class="login-btn">
             </li>
           </ul>
         </form>

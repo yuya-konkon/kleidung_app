@@ -2,7 +2,6 @@
 
 require_once('config.php');
 require_once('functions.php');
-require_once('users.php');
 
 session_start();
 
@@ -67,20 +66,19 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
     <div class="container">
       <div class="left">
         <!-- 左側 -->
-        <div class="image"><img src="<?php echo h($user['picture'], ENT_QUOTES ); ?>">
-          表示できないので家で本見る
+        <div class="profile-image"><img src="user_image/<?php echo h($user['image'], ENT_QUOTES); ?>" alt="<?php echo h($user['name'], ENT_QUOTES); ?> ">
         </div>
-        <div class="name">
+        <div class="user-name">
           <?php echo h($user['user_name']); ?>
         </div>
-        <div class="description">
+        <div class="profile-description">
           <?php echo h($user['description']); ?>
         </div>
         <div class="edit">
-          <a href="edit-btn">Edit Profile</a>
+          <a href="profile_edit.php" class="edit-btn">Edit Profile</a>
         </div>
-        <div class="edit">
-          <a href="logout.php" class="loguot-btn">Logout</a>
+        <div class="logout">
+          <a href="logout.php" class="logout-btn">Logout</a>
         </div>
       </div>
       <div class="contents">
