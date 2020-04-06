@@ -3,8 +3,6 @@
 require_once('config.php');
 require_once('functions.php');
 
-connectDb();
-
 session_start();
 
 ?>
@@ -36,7 +34,7 @@ session_start();
               <a href="new.php">ここにプラス</a>
             </li>
             <li class="nav-item">
-              <a href="pofile.php">ここに写真</a>
+              <a href="profile.php">ここに写真</a>
             </li>
           <?php else : ?>
             <li class="nav-item">

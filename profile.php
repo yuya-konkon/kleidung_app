@@ -5,44 +5,20 @@ require_once('functions.php');
 
 session_start();
 
-$dbh = connectDb();
-
-if ($_SESSION['id']) {
-  header('Location: index.php');
+if (empty($_SESSION['id'])) {
+  header('Location: login.php');
   exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $email = $_POST['email'];
-  $password = $_POST['password'];
-  $dbh = connectDb();
-  $errors = [];
-
-  if ($email == '') {
-    $errors[] = 'Mail Address が未入力です。';
-  }
-
-  if ($password == '') {
-    $errors[] = 'Password が未入力です。';
-  }
-
-  if (empty($errors)) {
-    $sql = 'SELECT * FROM users WHERE email = :email';
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-    $stmt->execute();
-
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (password_verify($password, $user['password'])) {
-      $_SESSION['id'] = $user['id'];
-      header('Location: index.php');
-      exit;
-    } else {
-      $errors[] = 'メールアドレスかパスワードが間違っています';
-    }
-  }
-}
+// ユーザー情報の取得
+// $user = getPostFindById($id);
+$dbh = connectDB();
+// ヒアドキュメント <<<でSQLと同じ文字出てくるまで1つなぎとする
+$sql = "SELECT* FROM users WHERE id = :id";
+$stmt = $dbh->prepare($sql);
+$stmt->bindParam(':id', $_SESSION['id'], PDO::PARAM_INT);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -70,10 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
           <?php if ($_SESSION['id']) : ?>
             <li class="nav-item">
-              <a href="log_out.php">ここに写真</a>
+              <a href="new.php">ここにプラス</a>
             </li>
             <li class="nav-item">
-              <a href="new.php">ここにぷらす</a>
+              <a href="profile.php">ここに写真</a>
             </li>
           <?php else : ?>
             <li class="nav-item">
@@ -87,31 +63,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     </nav>
 
-    <!-- ここからメイン -->
-    <div class="container CA-form">
-      <div class="row">
-        <form action="login.php" method="post" class="CA-form">
-          <?php if ($errors) : ?>
-            <ul class="alert alert-danger">
-              <?php foreach ($errors as $error) : ?>
-                <li><?php echo $error; ?></li>
-              <?php endforeach; ?>
-            </ul>
-          <?php endif; ?>
-          <ul>
-            <li>
-              <label for="email" class="label-name">Mail Address</label>
-              <input type="email" class="CAF-item" required name="email" placeholder="Mail Address">
-            </li>
-            <li>
-              <label for="password" class="label-name">Password</label>
-              <input type="password" class="CAF-item" required name="password" placeholder="Password">
-            </li>
-            <li>
-              <input type="submit" value="Login" class="login-btn">
-            </li>
-          </ul>
-        </form>
+    <div class="container">
+      <div class="left">
+        <!-- 左側 -->
+        <div class="profile-image"><img src="user_image/<?php echo h($user['image'], ENT_QUOTES); ?>" alt="<?php echo h($user['name'], ENT_QUOTES); ?> ">
+        </div>
+        <div class="user-name">
+          <?php echo h($user['user_name']); ?>
+        </div>
+        <div class="profile-description">
+          <?php echo h($user['description']); ?>
+        </div>
+        <div class="edit">
+          <a href="profile_edit.php" class="edit-btn">Edit Profile</a>
+        </div>
+        <div class="logout">
+          <a href="logout.php" class="logout-btn">Logout</a>
+        </div>
+      </div>
+      <div class="contents">
+        <!-- 右側 -->
       </div>
     </div>
 
