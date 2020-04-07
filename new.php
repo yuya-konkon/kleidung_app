@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if ($image) {
     $ext = substr($image, -3);
-    if ($ext != 'jpg' && $ext != 'png') {
+    if ($ext != 'jpg' && $ext != 'png' && $ext != 'JPG') {
       $errors[] = '画像ファイルは jpg png のいずれかを選択してください。';
     }
   }
