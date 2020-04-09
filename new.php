@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if ($image) {
     $ext = substr($image, -3);
-    if ($ext != 'jpg' && $ext != 'png' && $ext != 'JPG') {
+    if ($ext != 'jpg' && $ext != 'png' && $ext != 'JPG' && $ext != 'EIC') {
       $errors[] = '画像ファイルは jpg png のいずれかを選択してください。';
     }
   }
@@ -65,10 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     )
       VALUES
     (
-      :user_id
-      :category_id
-      :gender_id
-      :profileImage
+      :user_id,
+      :category_id,
+      :gender_id,
+      :profileImage,
       :desceiption
     )
     SQL;
@@ -77,14 +77,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
     $stmt->bindParam(':gender_id', $gender_id, PDO::PARAM_INT);
-    $stmt->bindParam(':desceiption', $desceiption, PDO::PARAM_STR);
     $stmt->bindParam(':profileImage', $profileImage, PDO::PARAM_STR);
+    $stmt->bindParam(':desceiption', $desceiption, PDO::PARAM_STR);
 
     $stmt->execute();
 
-    var_dump($profileImage);
-    // header('location: profile.php');
-    // exit;
+    var_dump($_FILES);
+
+    header('location: profile.php');
+    exit;
   }
 }
 
