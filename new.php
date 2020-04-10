@@ -43,15 +43,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if ($image) {
     $ext = substr($image, -3);
-    if ($ext != 'jpg' && $ext != 'png' && $ext != 'JPG' && $ext != 'EIC') {
-      $errors[] = '画像ファイルは jpg png のいずれかを選択してください。';
+    if ($ext != 'png' && $ext != 'gif') {
+      $errors[] = '画像ファイルは png gifのいずれかを選択してください。';
     }
   }
 
   if (empty($errors)) {
-    $profileImage = date('YmdHis') . $image;
-    move_uploaded_file($_FILES['item']['tmp_name'], 'items/' . $profileImage);
-    $_SESSION['join']['item'] = $profileImage;
+    $postItem = date('YmdHis') . $image;
+    move_uploaded_file($_FILES['image']['tmp_name'], 'items/' . $postItem);
+    $_SESSION['join']['item'] = $postItem;
 
     $sql = <<<SQL
     INSERT INTO
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       :user_id,
       :category_id,
       :gender_id,
-      :profileImage,
+      :postItem,
       :desceiption
     )
     SQL;
@@ -77,15 +77,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
     $stmt->bindParam(':gender_id', $gender_id, PDO::PARAM_INT);
-    $stmt->bindParam(':profileImage', $profileImage, PDO::PARAM_STR);
+    $stmt->bindParam(':postItem', $postItem, PDO::PARAM_STR);
     $stmt->bindParam(':desceiption', $desceiption, PDO::PARAM_STR);
 
     $stmt->execute();
 
-    var_dump($_FILES);
+    var_dump($_FILES['tmp_name']);
 
-    header('location: profile.php');
-    exit;
+    // header('location: profile.php');
+    // exit;
   }
 }
 
@@ -150,19 +150,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div id='boxImage' class="new-item-font">Sample Image</div>
                 <hr>
                 <input type='file' id='selectImage' name="item" class="new-item-font" required>
-                <script>
-                  var elm = document.getElementById("selectImage");
-                  elm.onchange = function(evt) {
-                    var selectFiles = evt.target.files;
-                    if (selectFiles.length != 0) {
-                      var fr = new FileReader();
-                      fr.readAsDataURL(selectFiles[0]);
-                      fr.onload = function(evt) {
-                        document.getElementById('boxImage').innerHTML = '<img src="' + fr.result + '" alt="" style="min-width:250px;min-height:250px;max-width:250px;max-height:250px;border:1px solid #666;">'; //readAsDataURLで得た結果を、srcに入れたimg要素を生成して挿入
-                      }
-                    }
-                  }
-                </script>
                 <div class="form-group">
                   <label for="category_id">カテゴリー</label>
                   <select name="category_id" class="form-control" required>
@@ -201,5 +188,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </div>
 
 </body>
+<script>
+  var elm = document.getElementById("selectImage");
+  elm.onchange = function(evt) {
+    var selectFiles = evt.target.files;
+    if (selectFiles.length != 0) {
+      var fr = new FileReader();
+      fr.readAsDataURL(selectFiles[0]);
+      fr.onload = function(evt) {
+        document.getElementById('boxImage').innerHTML = '<img src="' + fr.result + '" alt="" style="min-width:300px;min-height:500px;max-width:300px;max-height:500px;">'; //readAsDataURLで得た結果を、srcに入れたimg要素を生成して挿入
+      }
+    }
+  }
+</script>
 
 </html>
