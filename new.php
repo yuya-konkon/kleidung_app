@@ -43,10 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if ($image) {
     $ext = substr($image, -3);
-    if ($ext != 'png' && $ext != 'gif' && $ext != 'jpg') {
-      $errors[] = '画像ファイルは png gifのいずれかを選択してください。';
+    if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
+      $filePath = 'items/' . $_FILES['name'];
+      $success = move_uploaded_file($_FILES['tmp_name'], $filePath);
     }
-  }
+    } else {
+    $errors[] = '画像ファイルは png gifのいずれかを選択してください。';
+    }
 
   if (empty($errors)) {
     $postItem = date('YmdHis') . $image;
