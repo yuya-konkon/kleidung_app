@@ -43,17 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if ($image) {
     $ext = substr($image, -3);
-    if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
-      $filePath = 'items/' . $_FILES['name'];
-      $success = move_uploaded_file($_FILES['tmp_name'], $filePath);
+    if ($ext != 'jpg' && $ext != 'png' && $ext != 'gif' && $ext != 'JPG') {
+      $errors[] = '画像ファイルは jpg png gif のいずれかを選択してください。';
     }
-    } else {
-    $errors[] = '画像ファイルは png gifのいずれかを選択してください。';
-    }
+  }
 
   if (empty($errors)) {
     $postItem = date('YmdHis') . $image;
-    move_uploaded_file($_FILES['image']['tmp_name'], 'items/' . $postItem);
+    move_uploaded_file($_FILES['item']['tmp_name'], 'items/' . $postItem);
     $_SESSION['join']['item'] = $postItem;
 
     $sql = <<<SQL
@@ -85,10 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $stmt->execute();
 
-    var_dump($_FILES['tmp_name']);
-
-    // header('location: profile.php');
-    // exit;
+    header('location: profile.php');
+    exit;
   }
 }
 
