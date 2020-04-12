@@ -147,25 +147,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               <form action="new.php" method="post" enctype="multipart/form-data">
                 <div id='boxImage' class="new-item-font">Sample Image</div>
                 <hr>
-                <input type='file' id='selectImage' name="item" class="new-item-font" required>
+                <label for="selectImage" class="new-item-btn">
+                  Item Select
+                  <input type='file' id='selectImage' name="item" class="new-input-file" required>
+                </label>
                 <div class="form-group">
-                  <label for="category_id">カテゴリー</label>
+                  <label for="category_id" class="new-item-font">Category</label>
                   <select name="category_id" class="form-control" required>
-                    <option value='' disabled selected>選択してください</option>
+                    <option value='' disabled selected>Please Select</option>
                     <?php foreach ($categories as $c) : ?>
                       <option value="<?php echo h($c['id']); ?>"><?php echo h($c['name']); ?></option>
                     <?php endforeach; ?>
                   </select>
-                  <label for="gender_id">性別</label>
+                  <label for="gender_id" class="new-item-font">Gender</label>
                   <select name="gender_id" class="form-control" required>
-                    <option value='' disabled selected>選択してください</option>
+                    <option value='' disabled selected>Please Select</option>
                     <?php foreach ($gender as $g) : ?>
                       <option value="<?php echo h($g['id']); ?>"><?php echo h($g['name']); ?></option>
                     <?php endforeach; ?>
                   </select>
                 </div>
                 <div>
-                  <label for="desceiption" class="new-item-font">コメント</label>
+                  <label for="desceiption" class="new-item-font">Comment</label>
                   <textarea name="desceiption" cols="30" rows="5" class="form-control" required></textarea>
                 </div>
                 <input type="submit" value="New Post" class="NP-btn">
