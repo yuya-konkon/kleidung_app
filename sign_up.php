@@ -37,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   if ($image) {
     $ext = substr($image, -3);
-    if ($ext != 'jpg' && $ext != 'png' && $ext != 'gif' && $ext != 'JPG') {
-      $errors[] = '画像ファイルは jpg png gif のいずれかを選択してください。';
+    if ($ext != 'jpg' && $ext != 'png' && $ext != 'heic') {
+      $errors[] = '画像ファイルは jpg png heic のいずれかを選択してください。';
     }
   }
 
@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <li>
               <label for="image" class="label-name">
                 Profile Image
-                <input type="file" id="image" name="image" class="CAF-item image-btn" required>
+                <input type="file" name="image" required class="CAF-item image-btn" id="image">
               </label>
             </li>
             <li>
