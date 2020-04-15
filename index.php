@@ -13,6 +13,24 @@ $stmt->bindParam(':id', $_SESSION['id'], PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// カテゴリーの取得
+$sql = 'SELECT * FROM categories ORDER BY id';
+$stmt = $dbh->prepare($sql);
+$stmt->execute();
+$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// 性別の取得
+$sql = 'SELECT * FROM gender ORDER BY id';
+$stmt = $dbh->prepare($sql);
+$stmt->execute();
+$gender = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// アイテムの取得
+$sql = 'SELECT * FROM items ORDER BY created_at DESC';
+$stmt = $dbh->prepare($sql);
+$stmt->execute();
+$items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +52,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
   <!-- ここはheader -->
   <div class="flex-col-area">
-    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-3">
       <a href="index.php" class="logo">KleidunG</a>
       <div class="collapse navbar-collapse" id="navbarToggle">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -56,6 +74,43 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
         </ul>
       </div>
     </nav>
+
+    <!-- ここからメイン -->
+    <!-- 性別選択 -->
+    <div class="gender-bar">
+      <ul>
+        <li>All</li>
+        <li>MEN</li>
+        <li>WOMAN</li>
+        <li>KIDS</li>
+      </ul>
+      <hr class="gender-border">
+    </div>
+    <!-- カテゴリー選択 -->
+    <div class="conteainer">
+      <div class="row">
+        <div class="col-md-4 d-none d-md-block mt-5">
+          <ul>
+            <?php foreach ($categories as $c) : ?>
+              <li class="category-item">
+                <a href="index.php?category_id=<?php echo h($c['id']); ?>"><?php echo h($c['name']); ?></a>
+              </li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
+
+        <!-- アイテム表示 -->
+        <div class="col-md-8 item-view mt-5">
+          <div class="card" style="width: 12rem;">
+            <img src="" class="card-img-top" alt="...">
+            <div class="card-body">
+              <p class="card-text">内容</p>
+              <a href="" class="">お気に入りボタン</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
     <!-- ここからフッター -->

@@ -55,6 +55,24 @@ footer {
   height: 60px;
 }
 
+/* インデックス */
+.gender-bar {
+  text-align: center;
+}
+
+.gender-bar > ul > li {
+  display: inline;
+  margin-right: 4rem;
+}
+
+.gender-border {
+  border: solid 0.5px;
+}
+
+.category-item > a {
+  color: #707070;
+}
+
 /* アカウント登録画面 */
 
 .CA-form {
