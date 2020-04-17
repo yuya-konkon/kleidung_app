@@ -31,6 +31,8 @@ $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// var_dump($items);
+
 ?>
 
 <!DOCTYPE html>
@@ -102,11 +104,19 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- アイテム表示 -->
         <div class="col-md-8 item-view mt-5">
           <div class="card" style="width: 12rem;">
-            <img src="" class="card-img-top" alt="...">
-            <div class="card-body">
-              <p class="card-text">内容</p>
-              <a href="" class="">お気に入りボタン</a>
-            </div>
+            <?php foreach ($items as $item) : ?>
+              <img src="items/<?php echo h($item['photo']); ?>" class="card-img-top" alt="image">
+              <div class="card-body">
+                <span class="card-text"><?php echo h($item['desceiption']); ?></span>
+                <span class="card-text"><?php echo 'ここに結合してユーザーidから名前を表示する??'; ?></span>
+                <p class="card-text">
+                  <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
+                </p>
+                <p>
+                  <a href="" class="">お気に入りボタン</a>
+                </p>
+              </div>
+            <?php endforeach; ?>
           </div>
         </div>
       </div>
