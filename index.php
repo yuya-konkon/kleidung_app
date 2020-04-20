@@ -31,7 +31,7 @@ $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// var_dump($items);
+
 
 ?>
 
@@ -107,7 +107,8 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($items as $item) : ?>
               <img src="items/<?php echo h($item['photo']); ?>" class="card-img-top" alt="image">
               <div class="card-body">
-                <span class="card-text"><?php echo h($item['desceiption']); ?></span>
+                <!-- ここにユーザーの写真を乗せる -->
+                <div class="card-text"><?php echo 'ここはユーザーの画像'; ?></div>
                 <span class="card-text"><?php echo 'ここに結合してユーザーidから名前を表示する??'; ?></span>
                 <p class="card-text">
                   <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
