@@ -73,6 +73,11 @@ footer {
   color: #707070;
 }
 
+.user-image > img {
+  width: 75px;
+  border-radius: 100%;
+}
+
 /* アカウント登録画面 */
 
 .CA-form {

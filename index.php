@@ -26,12 +26,25 @@ $stmt->execute();
 $gender = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // アイテムの取得
-$sql = 'SELECT * FROM items ORDER BY created_at DESC';
+
+$sql = <<<SQL
+SELECT
+  i.*,
+  u.user_name,
+  u.image
+FROM
+  items i
+LEFT JOIN
+  users u
+ON
+  i.user_id = u.id;
+ORDER BY
+  i.created_at desc
+SQL;
+
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
 
 ?>
 
@@ -108,8 +121,8 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <img src="items/<?php echo h($item['photo']); ?>" class="card-img-top" alt="image">
               <div class="card-body">
                 <!-- ここにユーザーの写真を乗せる -->
-                <div class="card-text"><?php echo 'ここはユーザーの画像'; ?></div>
-                <span class="card-text"><?php echo 'ここに結合してユーザーidから名前を表示する??'; ?></span>
+                <div class="card-text user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
+                </div> <span class="card-text"><?php echo h($item['user_name']); ?></span>
                 <p class="card-text">
                   <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
                 </p>
