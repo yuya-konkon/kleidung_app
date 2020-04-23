@@ -115,22 +115,28 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <!-- アイテム表示 -->
-        <div class="col-md-8 item-view mt-5">
-          <div class="card" style="width: 12rem;">
-            <?php foreach ($items as $item) : ?>
-              <img src="items/<?php echo h($item['photo']); ?>" class="card-img-top" alt="image">
-              <div class="card-body">
-                <!-- ここにユーザーの写真を乗せる -->
-                <div class="card-text user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
-                </div> <span class="card-text"><?php echo h($item['user_name']); ?></span>
-                <p class="card-text">
-                  <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
-                </p>
-                <p>
-                  <a href="" class="">お気に入りボタン</a>
-                </p>
+        <div class="conteiner">
+          <div class="row">
+            <div class="col-md-8 mt-5">
+              <div class="card item-size">
+                <div class="article">
+                  <?php foreach ($items as $item) : ?>
+                    <img src="items/<?php echo h($item['photo']); ?>" class="card-img-top" alt="image">
+                    <div class="card-body">
+                      <div class="card-text user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
+                      </div>
+                      <p class="card-text item-user-name"><?php echo h($item['user_name']); ?></p>
+                      <p class="card-text item-date">
+                        <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
+                      </p>
+                      <p>
+                        <a href="" class="">お気に入りボタン</a>
+                      </p>
+                    </div>
+                  <?php endforeach; ?>
+                </div>
               </div>
-            <?php endforeach; ?>
+            </div>
           </div>
         </div>
       </div>

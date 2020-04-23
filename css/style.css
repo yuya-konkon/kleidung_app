@@ -73,9 +73,24 @@ footer {
   color: #707070;
 }
 
+.item-size {
+  width: 300px;
+  height: 450px;
+}
+
 .user-image > img {
-  width: 75px;
+  width: 100px;
+  height: 100px;
   border-radius: 100%;
+  float: left;
+}
+
+.item-user-name {
+  /* float: left; */
+}
+
+.item-date {
+  /* float: left; */
 }
 
 /* アカウント登録画面 */
