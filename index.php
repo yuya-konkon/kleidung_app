@@ -102,7 +102,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <hr class="gender-border">
     </div>
     <!-- カテゴリー選択 -->
-    <div class="conteainer">
+    <div class="container">
       <div class="row">
         <div class="col-md-4 d-none d-md-block mt-5">
           <ul>
@@ -115,40 +115,37 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <!-- アイテム表示 -->
-        <div class="conteiner">
-          <div class="row">
-            <div class="col-md-8 mt-5">
-              <div class="card item-size">
-                <div class="article">
-                  <?php foreach ($items as $item) : ?>
-                    <img src="items/<?php echo h($item['photo']); ?>" class="card-img-top" alt="image">
-                    <div class="card-body">
-                      <div class="card-text user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
-                      </div>
-                      <p class="card-text item-user-name"><?php echo h($item['user_name']); ?></p>
-                      <p class="card-text item-date">
-                        <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
-                      </p>
-                      <p>
-                        <a href="" class="">お気に入りボタン</a>
-                      </p>
-                    </div>
-                  <?php endforeach; ?>
+        <div class="col-md-8 mt-5 item-box">
+          <?php foreach ($items as $item) : ?>
+            <div class="main-item">
+              <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image">
+              <div class="item-ov">
+                <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
+                </div>
+                <div class="item-text">
+                  <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
+                  <p class="item-date">
+                    <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
+                  </p>
+                  <p>
+                    <a href="" class="flex-item">お気に入りボタン</a>
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
+          <?php endforeach; ?>
         </div>
       </div>
     </div>
+  </div>
 
 
-    <!-- ここからフッター -->
-    <footer class="footer font-small">
-      <div class="footer-copyright text-center py-3 footer-font">
-        &copy;Copyright © 2020 KleidunG.All rights reserved
-      </div>
-    </footer>
+  <!-- ここからフッター -->
+  <footer class="footer font-small">
+    <div class="footer-copyright text-center py-3 footer-font">
+      &copy;Copyright © 2020 KleidunG.All rights reserved
+    </div>
+  </footer>
   </div>
 
 </body>
