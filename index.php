@@ -104,7 +104,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- カテゴリー選択 -->
     <div class="container">
       <div class="row">
-        <div class="col-md-4 d-none d-md-block mt-5">
+        <div class="col-lg-4 d-none d-md-block mt-5">
           <ul>
             <?php foreach ($categories as $c) : ?>
               <li class="category-item">
@@ -115,25 +115,27 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <!-- アイテム表示 -->
-        <div class="col-md-8 mt-5 item-box">
-          <?php foreach ($items as $item) : ?>
-            <div class="main-item">
-              <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image">
-              <div class="item-ov">
-                <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
-                </div>
-                <div class="item-text">
-                  <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
-                  <p class="item-date">
-                    <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
-                  </p>
-                  <p>
-                    <a href="" class="flex-item">お気に入りボタン</a>
-                  </p>
+        <div class="col-lg-8 mt-5 item-box">
+          <div class="row">
+            <?php foreach ($items as $item) : ?>
+              <div class="main-item">
+                <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image">
+                <div class="item-ov">
+                  <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
+                  </div>
+                  <div class="item-text">
+                    <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
+                    <p class="item-date">
+                      <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
+                    </p>
+                    <p>
+                      <a href="" class="flex-item">お気に入りボタン</a>
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          <?php endforeach; ?>
+            <?php endforeach; ?>
+          </div>
         </div>
       </div>
     </div>
