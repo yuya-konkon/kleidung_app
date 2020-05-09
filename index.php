@@ -37,14 +37,20 @@ FROM
 LEFT JOIN
   users u
 ON
-  i.user_id = u.id;
+  i.user_id = u.id
 ORDER BY
-  i.created_at desc
+  created_at desc
 SQL;
 
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// お気に入りの取得
+$sql = 'SELECT * FROM favorites ORDER BY id';
+$stmt = $dbh->prepare($sql);
+$stmt->execute();
+$favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -129,7 +135,11 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                       <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
                     </p>
                     <p>
-                      <a href="" class="flex-item">お気に入りボタン</a>
+                      <?php if (isset($favorites['id'], $user['id'] )) : ?>
+                        <a href="good_delet.php?=<?php echo h($user['id']); ?>" class="flex-item">♥</a>
+                      <?php else : ?>
+                        <a href="good.php?=<?php echo h($user['id']); ?>">♡</a>
+                      <?php endif; ?>
                     </p>
                   </div>
                 </div>
