@@ -37,7 +37,7 @@ FROM
 LEFT JOIN
   users u
 ON
-  i.user_id = u.id
+  i.user_id = u.id;
 ORDER BY
   i.created_at desc
 SQL;
