@@ -100,10 +100,12 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- 性別選択 -->
     <div class="gender-bar">
       <ul>
-        <li>All</li>
-        <li>MEN</li>
-        <li>WOMAN</li>
-        <li>KIDS</li>
+        <li><a href="index.php">ALL</a></li>
+        <?php foreach ($gender as $g) :?>
+          <li>
+            <a href="index.php?gender_id=<?php echo h($g['id']); ?>"<?php echo h($g['name']); ?>></a>
+          </li>
+        <?php endforeach ;?>
       </ul>
       <hr class="gender-border">
     </div>
@@ -135,7 +137,7 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
                       <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
                     </p>
                     <p>
-                      <?php if (isset($favorites['id'], $user['id'] )) : ?>
+                      <?php if (isset($favorites['id'], $user['id'])) : ?>
                         <a href="good_delet.php?=<?php echo h($user['id']); ?>" class="flex-item">♥</a>
                       <?php else : ?>
                         <a href="good.php?=<?php echo h($user['id']); ?>">♡</a>

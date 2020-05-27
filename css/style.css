@@ -16,6 +16,7 @@ nav {
   letter-spacing: 0;
   color: #ffffff;
   opacity: 1;
+  text-decoration: none;
 }
 
 .nav-item a {
