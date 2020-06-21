@@ -103,7 +103,7 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <li><a href="index.php">ALL</a></li>
         <?php foreach ($gender as $g) :?>
           <li>
-            <a href="index.php?gender_id=<?php echo h($g['id']); ?>"<?php echo h($g['name']); ?>></a>
+            <a href="index.php?gender_id=<?php echo h($g['id']); ?>"><?php echo h($g['name']); ?></a>
           </li>
         <?php endforeach ;?>
       </ul>
