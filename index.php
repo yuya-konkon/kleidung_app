@@ -26,6 +26,8 @@ $stmt->execute();
 $gender = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // アイテムの取得
+$category_id = $_GET['category_id'];
+$gender_id = $_GET['gender_id'];
 
 $sql = <<<SQL
 SELECT
@@ -38,11 +40,30 @@ LEFT JOIN
   users u
 ON
   i.user_id = u.id
-ORDER BY
-  created_at desc
 SQL;
 
+if (($category_id) && is_numeric($category_id)) {
+  $sql_where = ' WHERE i.category_id = :category_id';
+} else {
+  $sql_where = "";
+}
+
+if (($gender_id) && is_numeric($gender_id)) {
+  $sql_gender = ' WHERE i.gender_id = :gender_id';
+} else {
+  $sql_gender = "";
+}
+
+$sql_order = ' ORDER BY i.created_at DESC';
+
+$sql = $sql . $sql_where . $sql_gender . $sql_order;
 $stmt = $dbh->prepare($sql);
+if (($category_id) && is_numeric($category_id)) {
+  $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+}
+if (($gender_id) && is_numeric($gender_id)) {
+  $stmt->bindParam(':gender_id', $gender_id, PDO::PARAM_INT);
+}
 $stmt->execute();
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -100,12 +121,12 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- 性別選択 -->
     <div class="gender-bar">
       <ul>
-        <li><a href="index.php">ALL</a></li>
-        <?php foreach ($gender as $g) :?>
+        <li><a href="index.php" class="gender">ALL</a></li>
+        <?php foreach ($gender as $g) : ?>
           <li>
-            <a href="index.php?gender_id=<?php echo h($g['id']); ?>"><?php echo h($g['name']); ?></a>
+            <a href="index.php?gender_id=<?php echo h($g['id']); ?>" class="gender"><?php echo h($g['name']); ?></a>
           </li>
-        <?php endforeach ;?>
+        <?php endforeach; ?>
       </ul>
       <hr class="gender-border">
     </div>
@@ -132,7 +153,9 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
                   <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
                   </div>
                   <div class="item-text">
-                    <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
+                    <a href="profile.php?=<?php echo h($user['id']); ?>">
+                      <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
+                    </a>
                     <p class="item-date">
                       <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
                     </p>

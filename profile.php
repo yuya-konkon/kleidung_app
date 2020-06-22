@@ -3,8 +3,6 @@
 require_once('config.php');
 require_once('functions.php');
 
-session_start();
-
 if (empty($_SESSION['id'])) {
   header('Location: login.php');
   exit;
