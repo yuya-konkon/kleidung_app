@@ -110,6 +110,10 @@ footer {
   margin-top: 10px;
 }
 
+.show-photo {
+  width: 100px;
+}
+
 /* アカウント登録画面 */
 
 .CA-form {

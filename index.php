@@ -148,7 +148,7 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <div class="row">
             <?php foreach ($items as $item) : ?>
               <div class="main-item">
-                <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image">
+                <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image" data-toggle="modal" data-target="#show-article<?php echo ($item['id']); ?> ">
                 <div class="item-ov">
                   <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
                   </div>
@@ -172,6 +172,28 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
                   </div>
                 </div>
               </div>
+              <div class="modal fade" id="show-article<?php echo ($item['id']); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <img src="items/<?php echo h($item['photo']); ?>" class="flex-item show-photo" alt="image">
+                    </div>
+                    </button>
+                    <div class="modal-body">
+                      <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image"></div>
+                      <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
+                      <p class="item-date">
+                        <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
+                      </p>
+                      <p><?php echo h($item['desceiption']); ?></p>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             <?php endforeach; ?>
           </div>
         </div>
@@ -187,6 +209,8 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
   </footer>
   </div>
+
+
 
 </body>
 
