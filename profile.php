@@ -22,20 +22,30 @@ $sql = <<<SQL
 SELECT
   i.*,
   u.user_name,
-  u.image
+  u.image,
+  f.id as favorite_id
 FROM
   items i
 LEFT JOIN
   users u
 ON
   i.user_id = u.id
+LEFT JOIN
+  favorites f
+ON
+  i.id = f.item_id
+AND
+  f.user_id = :user_id
 ORDER BY
-  i.created_at desc
+  i.created_at desc;
 SQL;
 
 $stmt = $dbh->prepare($sql);
+$stmt->bindParam(':user_id', $_SESSION['id'], PDO::PARAM_INT);
 $stmt->execute();
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+var_dump($items);
 
 ?>
 

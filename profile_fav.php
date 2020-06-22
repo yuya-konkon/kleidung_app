@@ -23,7 +23,8 @@ SELECT
   i.*,
   u.user_name,
   u.image,
-  f.user_id
+  f.user_id,
+  f.id as favorite_id
 FROM
   items i
 LEFT JOIN
@@ -101,7 +102,6 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <?php echo h($user['description']); ?>
         </div>
         <div><a href="profile.php">プロフィール</a></div>
-        <div><a href="profile_fav.php">ファボ</a></div>
         <div class="edit">
           <a href="profile_edit.php" class="edit-btn">Edit Profile</a>
         </div>
