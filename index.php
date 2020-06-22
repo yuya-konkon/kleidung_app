@@ -160,10 +160,13 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
                       <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
                     </p>
                     <p>
-                      <?php if (isset($favorites['id'], $user['id'])) : ?>
-                        <a href="good_delet.php?=<?php echo h($user['id']); ?>" class="flex-item">♥</a>
+                      <?php if ($_SESSION['id']) : ?>
+                        <?php if (isset($favorites['id'], $user['id'])) : ?>
+                          <a href="good_delet.php?=<?php echo h($user['id']); ?>" class="flex-item">♥</a>
+                        <?php else : ?>
+                          <a href="good.php?=<?php echo h($user['id']); ?>">♡</a>
+                        <?php endif; ?>
                       <?php else : ?>
-                        <a href="good.php?=<?php echo h($user['id']); ?>">♡</a>
                       <?php endif; ?>
                     </p>
                   </div>
