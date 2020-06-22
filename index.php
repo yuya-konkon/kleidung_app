@@ -13,6 +13,66 @@ $stmt->bindParam(':id', $_SESSION['id'], PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// カテゴリーの取得
+$sql = 'SELECT * FROM categories ORDER BY id';
+$stmt = $dbh->prepare($sql);
+$stmt->execute();
+$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// 性別の取得
+$sql = 'SELECT * FROM gender ORDER BY id';
+$stmt = $dbh->prepare($sql);
+$stmt->execute();
+$gender = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// アイテムの取得
+$category_id = $_GET['category_id'];
+$gender_id = $_GET['gender_id'];
+
+$sql = <<<SQL
+SELECT
+  i.*,
+  u.user_name,
+  u.image
+FROM
+  items i
+LEFT JOIN
+  users u
+ON
+  i.user_id = u.id
+SQL;
+
+if (($category_id) && is_numeric($category_id)) {
+  $sql_where = ' WHERE i.category_id = :category_id';
+} else {
+  $sql_where = "";
+}
+
+if (($gender_id) && is_numeric($gender_id)) {
+  $sql_gender = ' WHERE i.gender_id = :gender_id';
+} else {
+  $sql_gender = "";
+}
+
+$sql_order = ' ORDER BY i.created_at DESC';
+
+$sql = $sql . $sql_where . $sql_gender . $sql_order;
+$stmt = $dbh->prepare($sql);
+if (($category_id) && is_numeric($category_id)) {
+  $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+}
+if (($gender_id) && is_numeric($gender_id)) {
+  $stmt->bindParam(':gender_id', $gender_id, PDO::PARAM_INT);
+}
+$stmt->execute();
+$items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// お気に入りの取得
+$sql = 'SELECT * FROM favorites ORDER BY id';
+$stmt = $dbh->prepare($sql);
+$stmt->execute();
+$favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +94,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
   <!-- ここはheader -->
   <div class="flex-col-area">
-    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-3">
       <a href="index.php" class="logo">KleidunG</a>
       <div class="collapse navbar-collapse" id="navbarToggle">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -57,13 +117,75 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
       </div>
     </nav>
 
+    <!-- ここからメイン -->
+    <!-- 性別選択 -->
+    <div class="gender-bar">
+      <ul>
+        <li><a href="index.php" class="gender">ALL</a></li>
+        <?php foreach ($gender as $g) : ?>
+          <li>
+            <a href="index.php?gender_id=<?php echo h($g['id']); ?>" class="gender"><?php echo h($g['name']); ?></a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+      <hr class="gender-border">
+    </div>
+    <!-- カテゴリー選択 -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 d-none d-md-block mt-5">
+          <ul>
+            <?php foreach ($categories as $c) : ?>
+              <li class="category-item">
+                <a href="index.php?category_id=<?php echo h($c['id']); ?>"><?php echo h($c['name']); ?></a>
+              </li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
 
-    <!-- ここからフッター -->
-    <footer class="footer font-small">
-      <div class="footer-copyright text-center py-3 footer-font">
-        &copy;Copyright © 2020 KleidunG.All rights reserved
+        <!-- アイテム表示 -->
+        <div class="col-lg-8 mt-5 item-box">
+          <div class="row">
+            <?php foreach ($items as $item) : ?>
+              <div class="main-item">
+                <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image">
+                <div class="item-ov">
+                  <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
+                  </div>
+                  <div class="item-text">
+                    <a href="profile.php?=<?php echo h($user['id']); ?>">
+                      <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
+                    </a>
+                    <p class="item-date">
+                      <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
+                    </p>
+                    <p>
+                      <?php if ($_SESSION['id']) : ?>
+                        <?php if (isset($favorites['id'], $user['id'])) : ?>
+                          <a href="good_delet.php?=<?php echo h($user['id']); ?>" class="flex-item">♥</a>
+                        <?php else : ?>
+                          <a href="good.php?=<?php echo h($user['id']); ?>">♡</a>
+                        <?php endif; ?>
+                      <?php else : ?>
+                      <?php endif; ?>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+        </div>
       </div>
-    </footer>
+    </div>
+  </div>
+
+
+  <!-- ここからフッター -->
+  <footer class="footer font-small">
+    <div class="footer-copyright text-center py-3 footer-font">
+      &copy;Copyright © 2020 KleidunG.All rights reserved
+    </div>
+  </footer>
   </div>
 
 </body>
