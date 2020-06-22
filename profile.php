@@ -18,6 +18,25 @@ $stmt->bindParam(':id', $_SESSION['id'], PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+$sql = <<<SQL
+SELECT
+  i.*,
+  u.user_name,
+  u.image
+FROM
+  items i
+LEFT JOIN
+  users u
+ON
+  i.user_id = u.id
+ORDER BY
+  i.created_at desc
+SQL;
+
+$stmt = $dbh->prepare($sql);
+$stmt->execute();
+$items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -82,6 +101,56 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
       </div>
       <div class="contents">
         <!-- 右側 -->
+        <div class="row">
+          <?php foreach ($items as $item) : ?>
+            <?php if ($_SESSION['id'] == $item['user_id']) : ?>
+              <div class="main-item">
+                <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image" data-toggle="modal" data-target="#show-article<?php echo ($item['id']); ?> ">
+                <div class="item-ov">
+                  <div class="item-text">
+                    <p class="item-date">
+                      <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
+                    </p>
+                    <p>
+                      <?php if ($_SESSION['id']) : ?>
+                        <?php if (isset($favorites['id'], $user['id'])) : ?>
+                          <a href="good_delet.php?=<?php echo h($user['id']); ?>" class="flex-item">♥</a>
+                        <?php else : ?>
+                          <a href="good.php?=<?php echo h($user['id']); ?>">♡</a>
+                        <?php endif; ?>
+                      <?php else : ?>
+                      <?php endif; ?>
+                      <p><?php echo h($item['desceiption']); ?></p>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal fade" id="show-article<?php echo ($item['id']); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <img src="items/<?php echo h($item['photo']); ?>" class="flex-item show-photo" alt="image">
+                    </div>
+                    </button>
+                    <div class="modal-body">
+                      <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image"></div>
+                      <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
+                      <p class="item-date">
+                        <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
+                      </p>
+                      <p><?php echo h($item['desceiption']); ?></p>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            <?php endif; ?>
+          <?php endforeach; ?>
+        </div>
       </div>
     </div>
 

@@ -29,18 +29,40 @@ $gender = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $category_id = $_GET['category_id'];
 $gender_id = $_GET['gender_id'];
 
-$sql = <<<SQL
-SELECT
-  i.*,
-  u.user_name,
-  u.image
-FROM
-  items i
-LEFT JOIN
-  users u
-ON
-  i.user_id = u.id
-SQL;
+if (isset($_SESSION['id'])) {
+  $sql = <<<SQL
+  SELECT
+    i.*,
+    u.user_name,
+    u.image,
+    f.id as favorite_id
+  FROM
+    items i
+  LEFT JOIN
+    users u
+  ON
+    i.user_id = u.id
+  LEFT JOIN
+    favorites f
+  ON
+    i.id = f.item_id
+  AND
+    f.user_id = :user_id
+  SQL;
+} else {
+    $sql = <<<SQL
+  SELECT
+    i.*,
+    u.user_name,
+    u.image
+  FROM
+    items i
+  LEFT JOIN
+    users u
+  ON
+    i.user_id = u.id
+  SQL;
+}
 
 if (($category_id) && is_numeric($category_id)) {
   $sql_where = ' WHERE i.category_id = :category_id';
@@ -58,6 +80,10 @@ $sql_order = ' ORDER BY i.created_at DESC';
 
 $sql = $sql . $sql_where . $sql_gender . $sql_order;
 $stmt = $dbh->prepare($sql);
+
+if (isset($_SESSION['id'])) {
+  $stmt->bindParam(':user_id', $_SESSION['id'], PDO::PARAM_INT);
+}
 if (($category_id) && is_numeric($category_id)) {
   $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
 }
@@ -67,12 +93,8 @@ if (($gender_id) && is_numeric($gender_id)) {
 $stmt->execute();
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// お気に入りの取得
-$sql = 'SELECT * FROM favorites ORDER BY id';
-$stmt = $dbh->prepare($sql);
-$stmt->execute();
-$favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// var_dump($items);
 ?>
 
 <!DOCTYPE html>
@@ -161,10 +183,10 @@ $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </p>
                     <p>
                       <?php if ($_SESSION['id']) : ?>
-                        <?php if (isset($favorites['id'], $user['id'])) : ?>
-                          <a href="good_delet.php?=<?php echo h($user['id']); ?>" class="flex-item">♥</a>
+                        <?php if ($item['favorite_id']) : ?>
+                          <a href="good_delete.php?id=<?php echo h($item['favorite_id']); ?>" class="flex-item">♥</a>
                         <?php else : ?>
-                          <a href="good.php?=<?php echo h($user['id']); ?>">♡</a>
+                          <a href="good.php?id=<?php echo h($item['id']); ?>">♡</a>
                         <?php endif; ?>
                       <?php else : ?>
                       <?php endif; ?>
