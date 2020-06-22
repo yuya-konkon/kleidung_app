@@ -45,8 +45,6 @@ $stmt->bindParam(':user_id', $_SESSION['id'], PDO::PARAM_INT);
 $stmt->execute();
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-var_dump($items);
-
 ?>
 
 <!DOCTYPE html>
