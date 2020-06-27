@@ -92,7 +92,16 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container">
       <div class="left">
         <!-- 左側 -->
-        <div class="profile-image"><img src="user_image/<?php echo h($user['image'], ENT_QUOTES); ?>" alt="<?php echo h($user['name'], ENT_QUOTES); ?> ">
+        <div class="profile-image">
+          <img src="user_image/<?php echo h($user['image'], ENT_QUOTES); ?>" alt="<?php echo h($user['name'], ENT_QUOTES); ?> ">
+          <ul class="change-item">
+            <li>
+              <a href="profile.php" class="ci-btn btn">My Post</a>
+            </li>
+            <li>
+              <a href="profile_fav.php" class="ci-ttn btn">Favorite</a>
+            </li>
+          </ul>
         </div>
         <div class="user-name">
           <?php echo h($user['user_name']); ?>
@@ -100,9 +109,10 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="profile-description">
           <?php echo h($user['description']); ?>
         </div>
-        <div><a href="profile_fav.php">ファボ</a></div>
+      </div>
+      <div>
         <div class="edit">
-          <a href="profile_edit.php" class="edit-btn">Edit Profile</a>
+          <a href="edit.php?id=<?php echo h($user['id']); ?>" class="edit-btn">Edit Profile</a>
         </div>
         <div class="logout">
           <a href="logout.php" class="logout-btn">Logout</a>
@@ -171,6 +181,45 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </footer>
   </div>
 
+
+  <div class="modal fade" id="pf-image" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        </button>
+        <div class="modal-body">
+          <div class="user-image">
+            <img src="user_image/<?php echo h($user['image']); ?>" alt="image">
+          </div>
+          <form action="pf_edit.php" method="post" enctype="multipart/form-data">
+            <div id='boxImage' class="new-item-font">Sample Image</div>
+            <hr>
+            <label for="selectImage" class="new-item-btn">
+              Item Select
+              <input type='file' id='selectImage' name="image" class="new-input-file" required>
+            </label>
+            <div class="modal-footer">
+              <input type="submit" value="Edit Image" class="btn ei-btn">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+
+<script>
+  var elm = document.getElementById("selectImage");
+  elm.onchange = function(evt) {
+    var selectFiles = evt.target.files;
+    if (selectFiles.length != 0) {
+      var fr = new FileReader();
+      fr.readAsDataURL(selectFiles[0]);
+      fr.onload = function(evt) {
+        document.getElementById('boxImage').innerHTML = '<img src="' + fr.result + '" alt="" style="min-width:100px;min-height:100px;max-width:150px;max-height:500px;">'; //readAsDataURLで得た結果を、srcに入れたimg要素を生成して挿入
+      }
+    }
+  }
+</script>
 
 </html>
