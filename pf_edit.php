@@ -38,11 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $stmt = $dbh->prepare($sql);
     $stmt->bindParam(':profileImage', $profileImage, PDO::PARAM_STR);
-    $stmt->bindParam(':id',$_SESSION['id'],PDO::PARAM_INT);
+    $stmt->bindParam(':id', $_SESSION['id'], PDO::PARAM_INT);
     $stmt->execute();
   }
 
-  var_dump($_SESSION['join']);
   header('Location: profile.php');
   exit;
 }

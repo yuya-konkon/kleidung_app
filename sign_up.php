@@ -148,9 +148,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               <input type="password" name="password" placeholder="パスワードを入力してください" required class="CAF-item">
             </li>
             <li>
-              <label for="image" class="label-name">
-                Profile Image
-                <input type="file" name="image" required class="CAF-item image-btn" id="image">
+              <div id='boxImage' class="new-item-font">Sample Image</div>
+              <hr>
+              <label for="selectImage" class="label-name">
+                Select Profile
+                <input type='file' id='selectImage' name="image" class="new-input-file" required>
               </label>
             </li>
             <li>
@@ -169,5 +171,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </footer>
   </div>
 </body>
+
+<script>
+  var elm = document.getElementById("selectImage");
+  elm.onchange = function(evt) {
+    var selectFiles = evt.target.files;
+    if (selectFiles.length != 0) {
+      var fr = new FileReader();
+      fr.readAsDataURL(selectFiles[0]);
+      fr.onload = function(evt) {
+        document.getElementById('boxImage').innerHTML = '<img src="' + fr.result + '" alt="" style="min-width:100px;min-height:100px;max-width:300px;max-height:500px;">'; //readAsDataURLで得た結果を、srcに入れたimg要素を生成して挿入
+      }
+    }
+  }
+</script>
 
 </html>

@@ -73,7 +73,7 @@ footer {
 }
 
 .gender-border {
-  border: solid 0.5px;
+  border: solid 0.3px;
 }
 
 .category-item > a {
@@ -90,6 +90,7 @@ footer {
 .main-item {
   border: 1px solid #707070;
   margin-right: 20px;
+  width: 350px;
 }
 
 .main-item img {
@@ -278,9 +279,6 @@ label > .new-input-file {
 }
 
 /* プロフィール表示画面 */
-.profile-image {
-}
-
 .change-item {
   display: block;
 }
