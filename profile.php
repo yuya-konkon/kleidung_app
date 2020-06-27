@@ -60,6 +60,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="/favicon.ico">
+  <script src="https://kit.fontawesome.com/3ae6904195.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -89,11 +90,29 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </div>
     </nav>
 
+    <!-- ここからメイン -->
     <div class="container">
-      <div class="left">
+      <div class="row">
         <!-- 左側 -->
-        <div class="profile-image">
-          <img src="user_image/<?php echo h($user['image'], ENT_QUOTES); ?>" alt="<?php echo h($user['name'], ENT_QUOTES); ?> ">
+        <div class="col-md-4 d-none d-md-block">
+          <div class="profile-image">
+            <img src="user_image/<?php echo h($user['image'], ENT_QUOTES); ?>" alt="<?php echo h($user['name'], ENT_QUOTES); ?>" data-toggle="modal" data-target="#pf-image">
+          </div>
+          <div class="user-name">
+            <?php echo h($user['user_name']); ?>
+          </div>
+          <div class="profile-description">
+            <?php echo h($user['description']); ?>
+          </div>
+          <div class="edit">
+            <a href="edit.php" class="edit-btn">Edit Profile</a>
+          </div>
+          <div class="logout">
+            <a href="logout.php" class="logout-btn">Logout</a>
+          </div>
+        </div>
+        <!-- 右側 -->
+        <div class="col-md-8">
           <ul class="change-item">
             <li>
               <a href="profile.php" class="ci-btn btn">My Post</a>
@@ -102,77 +121,59 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <a href="profile_fav.php" class="ci-ttn btn">Favorite</a>
             </li>
           </ul>
-        </div>
-        <div class="user-name">
-          <?php echo h($user['user_name']); ?>
-        </div>
-        <div class="profile-description">
-          <?php echo h($user['description']); ?>
-        </div>
-      </div>
-      <div>
-        <div class="edit">
-          <a href="edit.php?id=<?php echo h($user['id']); ?>" class="edit-btn">Edit Profile</a>
-        </div>
-        <div class="logout">
-          <a href="logout.php" class="logout-btn">Logout</a>
-        </div>
-      </div>
-      <div class="contents">
-        <!-- 右側 -->
-        <div class="row">
-          <?php foreach ($items as $item) : ?>
-            <?php if ($_SESSION['id'] == $item['user_id']) : ?>
-              <div class="main-item">
-                <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image" data-toggle="modal" data-target="#show-article<?php echo ($item['id']); ?> ">
-                <div class="item-ov">
-                  <div class="item-text">
-                    <p class="item-date">
-                      <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
-                    </p>
-                    <p>
-                      <?php if ($_SESSION['id']) : ?>
-                        <?php if ($item['favorite_id']) : ?>
-                          <a href="good_delete.php?id=<?php echo h($item['favorite_id']); ?>" class="flex-item">♥</a>
-                        <?php else : ?>
-                          <a href="good.php?id=<?php echo h($item['id']); ?>">♡</a>
-                        <?php endif; ?>
-                      <?php else : ?>
-                      <?php endif; ?>
-                      <p><?php echo h($item['desceiption']); ?></p>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="modal fade" id="show-article<?php echo ($item['id']); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <img src="items/<?php echo h($item['photo']); ?>" class="flex-item show-photo" alt="image">
-                    </div>
-                    </button>
-                    <div class="modal-body">
-                      <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image"></div>
-                      <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
+          <div class="row">
+            <?php foreach ($items as $item) : ?>
+              <?php if ($_SESSION['id'] == $item['user_id']) : ?>
+                <div class="main-item">
+                  <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image" data-toggle="modal" data-target="#show-article<?php echo ($item['id']); ?> ">
+                  <div class="item-ov">
+                    <div class="item-text">
                       <p class="item-date">
                         <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
                       </p>
-                      <p><?php echo h($item['desceiption']); ?></p>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                      <p>
+                        <?php if ($_SESSION['id']) : ?>
+                          <?php if ($item['favorite_id']) : ?>
+                            <a href="good_delete.php?id=<?php echo h($item['favorite_id']); ?>" class="flex-item">♥</a>
+                          <?php else : ?>
+                            <a href="good.php?id=<?php echo h($item['id']); ?>">♡</a>
+                          <?php endif; ?>
+                        <?php else : ?>
+                        <?php endif; ?>
+                        <p><?php echo h($item['desceiption']); ?></p>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal fade" id="show-article<?php echo ($item['id']); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <img src="items/<?php echo h($item['photo']); ?>" class="flex-item show-photo" alt="image">
+                      </div>
+                      </button>
+                      <div class="modal-body">
+                        <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image"></div>
+                        <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
+                        <p class="item-date">
+                          <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
+                        </p>
+                        <p><?php echo h($item['desceiption']); ?></p>
+                        <div class="modal-footer">
+                          <a href="delete.php?id=<?= h($item['id']) ?>" class="btn btn-warning">削除</a>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-            <?php endif; ?>
-          <?php endforeach; ?>
+              <?php endif; ?>
+            <?php endforeach; ?>
+          </div>
         </div>
       </div>
     </div>
-
     <!-- ここからフッター -->
     <footer class="footer font-small">
       <div class="footer-copyright text-center py-3 footer-font">
