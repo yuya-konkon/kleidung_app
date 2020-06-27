@@ -50,7 +50,7 @@ if (isset($_SESSION['id'])) {
     f.user_id = :user_id
   SQL;
 } else {
-    $sql = <<<SQL
+  $sql = <<<SQL
   SELECT
     i.*,
     u.user_name,
@@ -93,8 +93,6 @@ if (($gender_id) && is_numeric($gender_id)) {
 $stmt->execute();
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-// var_dump($items);
 ?>
 
 <!DOCTYPE html>
@@ -231,8 +229,6 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
   </footer>
   </div>
-
-
 
 </body>
 
