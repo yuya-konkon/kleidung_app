@@ -129,8 +129,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </li>
             <li>
               <label for="description" class="label-name">description</label>
-              <input type="text" name="description" value="<?php echo h($user['description']); ?>" class=" CAF-item">
+              <textarea name="description" id="" cols="20" rows="5" value="" class="CAF-item mb-3"><?php echo h($user['description']); ?></textarea>
             </li>
+
             <li>
               <input type="submit" value="Update Account" class="CA-btn UD-btn">
             </li>

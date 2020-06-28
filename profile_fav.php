@@ -135,9 +135,9 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                       <p>
                         <?php if ($_SESSION['id']) : ?>
                           <?php if ($item['favorite_id']) : ?>
-                            <a href="good_delete.php?id=<?php echo h($item['favorite_id']); ?>" class="flex-item">♥</a>
+                            <a href="good_delete.php?id=<?php echo h($item['favorite_id']); ?>" class="flex-item good">♥</a>
                           <?php else : ?>
-                            <a href="good.php?id=<?php echo h($item['id']); ?>">♡</a>
+                            <a href="good.php?id=<?php echo h($item['id']); ?>" class="nomal-good">♡</a>
                           <?php endif; ?>
                         <?php else : ?>
                         <?php endif; ?>
@@ -150,7 +150,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="modal fade" id="show-article<?php echo ($item['id']); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                      <div class="modal-header">
+                      <div class="modal-header modal-image">
                         <img src="items/<?php echo h($item['photo']); ?>" class="flex-item show-photo" alt="image">
                       </div>
                       </button>
@@ -162,7 +162,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </p>
                         <p><?php echo h($item['desceiption']); ?></p>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                       </div>
                     </div>

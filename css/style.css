@@ -115,6 +115,14 @@ footer {
   width: 100px;
 }
 
+.item-text > a {
+  text-decoration: none;
+}
+
+.item-text > a > p {
+  color: black;
+}
+
 /* アカウント登録画面 */
 
 .CA-form {
@@ -305,4 +313,18 @@ label > .new-input-file {
 
 .change-item a:hover {
   color: #deb887;
+}
+
+.modal-image > img {
+  width: 400px;
+}
+
+p > .good {
+  color: red;
+  text-decoration: none;
+}
+
+p > .nomal-good {
+  color: red;
+  text-decoration: none;
 }
