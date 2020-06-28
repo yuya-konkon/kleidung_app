@@ -275,10 +275,14 @@ label > .new-input-file {
   text-align: center;
   color: #ffffff;
   border-radius: 30px 30px 30px 30px;
-  bottom: 100px;
+  box-shadow: 6px 6px 3px #666666;
 }
 
 /* プロフィール表示画面 */
+.pf-zone {
+  margin-left: 10px;
+}
+
 .change-item {
   display: block;
 }

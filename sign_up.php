@@ -162,7 +162,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
       </div>
     </div>
-
     <!-- ここからフッター -->
     <footer class="footer font-small">
       <div class="footer-copyright text-center py-3 footer-font">

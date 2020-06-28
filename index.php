@@ -151,9 +151,8 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <hr class="gender-border">
     </div>
     <!-- カテゴリー選択 -->
-    <div class="container">
       <div class="row">
-        <div class="col-lg-4 d-none d-md-block mt-5">
+        <div class="col-md-4 mt-5">
           <ul>
             <?php foreach ($categories as $c) : ?>
               <li class="category-item">
@@ -164,10 +163,10 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <!-- アイテム表示 -->
-        <div class="col-lg-8 mt-5 item-box">
+        <div class="col-md-8 d-none d-md-block mt-5 item-box">
           <div class="row">
             <?php foreach ($items as $item) : ?>
-              <div class="main-item">
+              <div class="main-item mt-2">
                 <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image" data-toggle="modal" data-target="#show-article<?php echo ($item['id']); ?> ">
                 <div class="item-ov">
                   <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
@@ -217,7 +216,6 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
           </div>
         </div>
-      </div>
     </div>
   </div>
 
