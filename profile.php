@@ -67,7 +67,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <!-- ここはheader -->
   <div class="flex-col-area">
-    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-5 header">
       <a href="index.php" class="logo">KleidunG</a>
       <div class="collapse navbar-collapse" id="navbarToggle">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -91,8 +91,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </nav>
 
     <!-- ここからメイン -->
-    <div class="container">
-      <div class="row">
+      <div class="row prof-main">
         <!-- 左側 -->
         <div class="col-md-4 d-none d-md-block">
           <div class="profile-image">
@@ -102,7 +101,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php echo h($user['user_name']); ?>
           </div>
           <div class="profile-description">
-            <?php echo h($user['description']); ?>
+            <?php echo nl2br(h($user['description'])); ?>
           </div>
           <div class="edit">
             <a href="edit.php" class="edit-btn">Edit Profile</a>
@@ -112,7 +111,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
           </div>
         </div>
         <!-- 右側 -->
-        <div class="col-md-8">
+        <div class="col-md-8 mb-3">
           <ul class="change-item">
             <li>
               <a href="profile.php" class="ci-btn btn">My Post</a>
@@ -140,7 +139,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                           <?php endif; ?>
                         <?php else : ?>
                         <?php endif; ?>
-                        <p><?php echo h($item['desceiption']); ?></p>
+                        <p><?php echo nl2br(h($item['desceiption'])); ?></p>
                       </p>
                     </div>
                   </div>
@@ -158,7 +157,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <p class="item-date">
                           <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
                         </p>
-                        <p><?php echo h($item['desceiption']); ?></p>
+                        <p><?php echo nl2br(h($item['desceiption'])); ?></p>
                         <div class="modal-footer">
                           <a href="delete.php?id=<?= h($item['id']) ?>" class="btn btn-warning">削除</a>
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
@@ -173,7 +172,6 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
           </div>
         </div>
       </div>
-    </div>
     <!-- ここからフッター -->
     <footer class="footer font-small">
       <div class="footer-copyright text-center py-3 footer-font">

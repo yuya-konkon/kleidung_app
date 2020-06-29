@@ -163,7 +163,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </div>
 
       <!-- アイテム表示 -->
-      <div class="col-md-8 d-none d-md-block mt-5 item-box">
+      <div class="col-md-8 d-none d-md-block mt-5 mb-3 item-box">
         <div class="row">
           <?php foreach ($items as $item) : ?>
             <div class="main-item mt-2">
@@ -204,7 +204,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <p class="item-date">
                       <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
                     </p>
-                    <p><?php echo h($item['desceiption']); ?></p>
+                    <p><?php echo nl2br(h($item['desceiption'])); ?></p>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
