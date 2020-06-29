@@ -63,8 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
 
-  <!-- ここはheader -->
   <div class="flex-col-area">
+    <!-- ここはheader -->
     <nav class="navbar navbar-expand-lg navbar-dark mb-5">
       <a href="index.php" class="logo">KleidunG</a>
       <div class="collapse navbar-collapse" id="navbarToggle">

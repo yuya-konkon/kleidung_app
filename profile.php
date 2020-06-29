@@ -159,8 +159,8 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </p>
                         <p><?php echo nl2br(h($item['desceiption'])); ?></p>
                         <div class="modal-footer">
-                          <a href="delete.php?id=<?= h($item['id']) ?>" class="btn btn-warning">削除</a>
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                          <a href="delete.php?id=<?= h($item['id']) ?>" class="btn btn-warning">Delete</a>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                       </div>
                     </div>

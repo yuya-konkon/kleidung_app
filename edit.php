@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
   if ($user) {
-    $errors[] = '既にメールアドレスが登録されています';
+    $errors[] = '既に同じメールアドレスが登録されています';
   }
 
   $sql = <<<SQL

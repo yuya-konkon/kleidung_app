@@ -1,10 +1,10 @@
 @charset "utf-8";
 
-/* ヘッダー */
 * {
   font-size: 1.1rem;
 }
 
+/* ヘッダー */
 .flex-col-area {
   display: flex;
   flex-direction: column;

@@ -212,13 +212,11 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
               </div>
             </div>
-
           <?php endforeach; ?>
         </div>
       </div>
     </div>
   </div>
-
 
   <!-- ここからフッター -->
   <footer class="footer font-small">
