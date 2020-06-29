@@ -24,6 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors[] = 'Password が未入力です。';
   }
 
+  if ($image == '') {
+    $errors[] = 'Image を選択してください';
+  }
+
   $dbh = connectDb();
   $sql = 'SELECT * FROM users WHERE email = :email';
   $stmt = $dbh->prepare($sql);
@@ -152,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               <hr>
               <label for="selectImage" class="label-name">
                 Select Profile
-                <input type='file' id='selectImage' name="image" class="new-input-file" required>
+                <input type='file' id='selectImage' name="image" class="new-input-file">
               </label>
             </li>
             <li>

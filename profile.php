@@ -123,7 +123,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <div class="row item-view">
             <?php foreach ($items as $item) : ?>
               <?php if ($_SESSION['id'] == $item['user_id']) : ?>
-                <div class="main-item">
+                <div class="main-item mt-2">
                   <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image" data-toggle="modal" data-target="#show-article<?php echo ($item['id']); ?> ">
                   <div class="item-ov">
                     <div class="item-text">
