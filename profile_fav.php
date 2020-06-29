@@ -121,7 +121,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <a href="profile_fav.php" class="ci-ttn btn">Favorite</a>
           </li>
         </ul>
-        <div class="row">
+        <div class="row item-view">
           <?php foreach ($items as $item) : ?>
             <?php if ($_SESSION['id'] == $item['user_id']) : ?>
               <div class="main-item">

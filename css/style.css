@@ -82,6 +82,7 @@ footer {
 
 .category-item > a {
   color: #707070;
+  padding-left: 80px;
 }
 
 /* アイテム */
@@ -340,4 +341,8 @@ p > .nomal-good {
 
 .profile-description {
   padding-right: 80px;
+}
+
+.item-view {
+  padding-left: 60px;
 }
