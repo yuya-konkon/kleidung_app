@@ -24,6 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors[] = 'Password が未入力です。';
   }
 
+  if ($image == '') {
+    $errors[] = 'Image を選択してください';
+  }
+
   $dbh = connectDb();
   $sql = 'SELECT * FROM users WHERE email = :email';
   $stmt = $dbh->prepare($sql);
@@ -137,22 +141,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <ul>
             <li>
               <label for="name" class="label-name">User Name</label>
-              <input type="name" name="name" placeholder="ユーザー名をしてください" required class="CAF-item">
+              <input type="name" name="name" placeholder="User Name を入力してください" required class="CAF-item">
             </li>
             <li>
               <label for="email" class="label-name">Mail Address</label>
-              <input type="email" name="email" placeholder="メールアドレスを入力してください" required class="CAF-item">
+              <input type="email" name="email" placeholder="Mail Address を入力してください" required class="CAF-item">
             </li>
             <li>
               <label for="password" class="label-name">Password</label>
-              <input type="password" name="password" placeholder="パスワードを入力してください" required class="CAF-item">
+              <input type="password" name="password" placeholder="Password を入力してください" required class="CAF-item">
             </li>
             <li>
               <div id='boxImage' class="new-item-font">Sample Image</div>
               <hr>
               <label for="selectImage" class="label-name">
                 Select Profile
-                <input type='file' id='selectImage' name="image" class="new-input-file" required>
+                <input type='file' id='selectImage' name="image" class="new-input-file">
               </label>
             </li>
             <li>
@@ -162,7 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
       </div>
     </div>
-
     <!-- ここからフッター -->
     <footer class="footer font-small">
       <div class="footer-copyright text-center py-3 footer-font">

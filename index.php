@@ -114,7 +114,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <!-- ここはheader -->
   <div class="flex-col-area">
-    <nav class="navbar navbar-expand-lg navbar-dark mb-3">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-3 header">
       <a href="index.php" class="logo">KleidunG</a>
       <div class="collapse navbar-collapse" id="navbarToggle">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -151,76 +151,72 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <hr class="gender-border">
     </div>
     <!-- カテゴリー選択 -->
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 d-none d-md-block mt-5">
-          <ul>
-            <?php foreach ($categories as $c) : ?>
-              <li class="category-item">
-                <a href="index.php?category_id=<?php echo h($c['id']); ?>"><?php echo h($c['name']); ?></a>
-              </li>
-            <?php endforeach; ?>
-          </ul>
-        </div>
+    <div class="row">
+      <div class="col-md-4 mt-5 category">
+        <ul>
+          <?php foreach ($categories as $c) : ?>
+            <li class="category-item">
+              <a href="index.php?category_id=<?php echo h($c['id']); ?>"><?php echo h($c['name']); ?></a>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
 
-        <!-- アイテム表示 -->
-        <div class="col-lg-8 mt-5 item-box">
-          <div class="row">
-            <?php foreach ($items as $item) : ?>
-              <div class="main-item">
-                <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image" data-toggle="modal" data-target="#show-article<?php echo ($item['id']); ?> ">
-                <div class="item-ov">
-                  <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
+      <!-- アイテム表示 -->
+      <div class="col-md-8 d-none d-md-block mt-5 mb-3 item-box">
+        <div class="row">
+          <?php foreach ($items as $item) : ?>
+            <div class="main-item mt-2">
+              <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image" data-toggle="modal" data-target="#show-article<?php echo ($item['id']); ?> ">
+              <div class="item-ov">
+                <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image">
+                </div>
+                <div class="item-text">
+                  <a href="profile.php?=<?php echo h($user['id']); ?>">
+                    <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
+                  </a>
+                  <p class="item-date">
+                    <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
+                  </p>
+                  <p>
+                    <?php if ($_SESSION['id']) : ?>
+                      <?php if ($item['favorite_id']) : ?>
+                        <a href="good_delete.php?id=<?php echo h($item['favorite_id']); ?>" class="flex-item good">♥</a>
+                      <?php else : ?>
+                        <a href="good.php?id=<?php echo h($item['id']); ?>" class="nomal-good">♡</a>
+                      <?php endif; ?>
+                    <?php else : ?>
+                    <?php endif; ?>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade" id="show-article<?php echo ($item['id']); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header modal-image">
+                    <img src="items/<?php echo h($item['photo']); ?>" class="flex-item show-photo" alt="image">
                   </div>
-                  <div class="item-text">
-                    <a href="profile.php?=<?php echo h($user['id']); ?>">
-                      <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
-                    </a>
+                  </button>
+                  <div class="modal-body">
+                    <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image"></div>
+                    <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
                     <p class="item-date">
                       <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
                     </p>
-                    <p>
-                      <?php if ($_SESSION['id']) : ?>
-                        <?php if ($item['favorite_id']) : ?>
-                          <a href="good_delete.php?id=<?php echo h($item['favorite_id']); ?>" class="flex-item">♥</a>
-                        <?php else : ?>
-                          <a href="good.php?id=<?php echo h($item['id']); ?>">♡</a>
-                        <?php endif; ?>
-                      <?php else : ?>
-                      <?php endif; ?>
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="modal fade" id="show-article<?php echo ($item['id']); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <img src="items/<?php echo h($item['photo']); ?>" class="flex-item show-photo" alt="image">
-                    </div>
-                    </button>
-                    <div class="modal-body">
-                      <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image"></div>
-                      <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
-                      <p class="item-date">
-                        <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
-                      </p>
-                      <p><?php echo h($item['desceiption']); ?></p>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-                      </div>
+                    <p><?php echo nl2br(h($item['desceiption'])); ?></p>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                   </div>
                 </div>
               </div>
-
-            <?php endforeach; ?>
-          </div>
+            </div>
+          <?php endforeach; ?>
         </div>
       </div>
     </div>
   </div>
-
 
   <!-- ここからフッター -->
   <footer class="footer font-small">

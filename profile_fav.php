@@ -67,7 +67,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <!-- ここはheader -->
   <div class="flex-col-area">
-    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-5 header">
       <a href="index.php" class="logo">KleidunG</a>
       <div class="collapse navbar-collapse" id="navbarToggle">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -92,86 +92,84 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
     <!-- ここからメイン -->
-    <div class="container">
-      <div class="row">
-        <!-- 左側 -->
-        <div class="col-md-4 d-none d-md-block">
-          <div class="profile-image">
-            <img src="user_image/<?php echo h($user['image'], ENT_QUOTES); ?>" alt="<?php echo h($user['name'], ENT_QUOTES); ?> ">
-          </div>
-          <div class="user-name">
-            <?php echo h($user['user_name']); ?>
-          </div>
-          <div class="profile-description">
-            <?php echo h($user['description']); ?>
-          </div>
-          <div class="edit">
-            <a href="edit.php" class="edit-btn">Edit Profile</a>
-          </div>
-          <div class="logout">
-            <a href="logout.php" class="logout-btn">Logout</a>
-          </div>
+    <div class="row prof-main">
+      <!-- 左側 -->
+      <div class="col-md-4 d-none d-md-block">
+        <div class="profile-image">
+          <img src="user_image/<?php echo h($user['image'], ENT_QUOTES); ?>" alt="<?php echo h($user['name'], ENT_QUOTES); ?> ">
         </div>
-        <!-- 右側 -->
-        <div class="col-md-8">
-          <ul class="change-item">
-            <li>
-              <a href="profile.php" class="ci-btn btn">My Post</a>
-            </li>
-            <li>
-              <a href="profile_fav.php" class="ci-ttn btn">Favorite</a>
-            </li>
-          </ul>
-          <div class="row">
-            <?php foreach ($items as $item) : ?>
-              <?php if ($_SESSION['id'] == $item['user_id']) : ?>
-                <div class="main-item">
-                  <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image" data-toggle="modal" data-target="#show-article<?php echo ($item['id']); ?> ">
-                  <div class="item-ov">
-                    <div class="item-text">
+        <div class="user-name">
+          <?php echo h($user['user_name']); ?>
+        </div>
+        <div class="profile-description">
+          <?php echo nl2br(h($user['description'])); ?>
+        </div>
+        <div class="edit">
+          <a href="edit.php" class="edit-btn">Edit Profile</a>
+        </div>
+        <div class="logout">
+          <a href="logout.php" class="logout-btn">Logout</a>
+        </div>
+      </div>
+      <!-- 右側 -->
+      <div class="col-md-8 mb-3">
+        <ul class="change-item">
+          <li>
+            <a href="profile.php" class="ci-btn btn">My Post</a>
+          </li>
+          <li>
+            <a href="profile_fav.php" class="ci-ttn btn">Favorite</a>
+          </li>
+        </ul>
+        <div class="row item-view">
+          <?php foreach ($items as $item) : ?>
+            <?php if ($_SESSION['id'] == $item['user_id']) : ?>
+              <div class="main-item mt-2">
+                <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image" data-toggle="modal" data-target="#show-article<?php echo ($item['id']); ?> ">
+                <div class="item-ov">
+                  <div class="item-text">
+                    <p class="item-date">
+                      <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
+                    </p>
+                    <p>
+                      <?php if ($_SESSION['id']) : ?>
+                        <?php if ($item['favorite_id']) : ?>
+                          <a href="good_delete.php?id=<?php echo h($item['favorite_id']); ?>" class="flex-item good">♥</a>
+                        <?php else : ?>
+                          <a href="good.php?id=<?php echo h($item['id']); ?>" class="nomal-good">♡</a>
+                        <?php endif; ?>
+                      <?php else : ?>
+                      <?php endif; ?>
+                      <p><?php echo nl2br(h($item['desceiption'])); ?></p>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal fade" id="show-article<?php echo ($item['id']); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header modal-image">
+                      <img src="items/<?php echo h($item['photo']); ?>" class="flex-item show-photo" alt="image">
+                    </div>
+                    </button>
+                    <div class="modal-body">
+                      <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image"></div>
+                      <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
                       <p class="item-date">
                         <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
                       </p>
-                      <p>
-                        <?php if ($_SESSION['id']) : ?>
-                          <?php if ($item['favorite_id']) : ?>
-                            <a href="good_delete.php?id=<?php echo h($item['favorite_id']); ?>" class="flex-item">♥</a>
-                          <?php else : ?>
-                            <a href="good.php?id=<?php echo h($item['id']); ?>">♡</a>
-                          <?php endif; ?>
-                        <?php else : ?>
-                        <?php endif; ?>
-                        <p><?php echo h($item['desceiption']); ?></p>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="modal fade" id="show-article<?php echo ($item['id']); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <img src="items/<?php echo h($item['photo']); ?>" class="flex-item show-photo" alt="image">
-                      </div>
-                      </button>
-                      <div class="modal-body">
-                        <div class="user-image"><img src="user_image/<?php echo h($item['image']); ?>" alt="image"></div>
-                        <p class="item-user-name"><?php echo h($item['user_name']); ?></p>
-                        <p class="item-date">
-                          <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
-                        </p>
-                        <p><?php echo h($item['desceiption']); ?></p>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-                        </div>
+                      <p><?php echo nl2br(h($item['desceiption'])); ?></p>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
 
-              <?php endif; ?>
-            <?php endforeach; ?>
-          </div>
+            <?php endif; ?>
+          <?php endforeach; ?>
         </div>
       </div>
     </div>

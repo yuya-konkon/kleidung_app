@@ -67,7 +67,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <!-- ここはheader -->
   <div class="flex-col-area">
-    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-5 header">
       <a href="index.php" class="logo">KleidunG</a>
       <div class="collapse navbar-collapse" id="navbarToggle">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -91,8 +91,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </nav>
 
     <!-- ここからメイン -->
-    <div class="container">
-      <div class="row">
+      <div class="row prof-main">
         <!-- 左側 -->
         <div class="col-md-4 d-none d-md-block">
           <div class="profile-image">
@@ -102,7 +101,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php echo h($user['user_name']); ?>
           </div>
           <div class="profile-description">
-            <?php echo h($user['description']); ?>
+            <?php echo nl2br(h($user['description'])); ?>
           </div>
           <div class="edit">
             <a href="edit.php" class="edit-btn">Edit Profile</a>
@@ -112,7 +111,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
           </div>
         </div>
         <!-- 右側 -->
-        <div class="col-md-8">
+        <div class="col-md-8 mb-3">
           <ul class="change-item">
             <li>
               <a href="profile.php" class="ci-btn btn">My Post</a>
@@ -121,10 +120,10 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <a href="profile_fav.php" class="ci-ttn btn">Favorite</a>
             </li>
           </ul>
-          <div class="row">
+          <div class="row item-view">
             <?php foreach ($items as $item) : ?>
               <?php if ($_SESSION['id'] == $item['user_id']) : ?>
-                <div class="main-item">
+                <div class="main-item mt-2">
                   <img src="items/<?php echo h($item['photo']); ?>" class="flex-item item-image" alt="image" data-toggle="modal" data-target="#show-article<?php echo ($item['id']); ?> ">
                   <div class="item-ov">
                     <div class="item-text">
@@ -134,13 +133,13 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                       <p>
                         <?php if ($_SESSION['id']) : ?>
                           <?php if ($item['favorite_id']) : ?>
-                            <a href="good_delete.php?id=<?php echo h($item['favorite_id']); ?>" class="flex-item">♥</a>
+                            <a href="good_delete.php?id=<?php echo h($item['favorite_id']); ?>" class="flex-item good">♥</a>
                           <?php else : ?>
-                            <a href="good.php?id=<?php echo h($item['id']); ?>">♡</a>
+                            <a href="good.php?id=<?php echo h($item['id']); ?>" class="nomal-good">♡</a>
                           <?php endif; ?>
                         <?php else : ?>
                         <?php endif; ?>
-                        <p><?php echo h($item['desceiption']); ?></p>
+                        <p><?php echo nl2br(h($item['desceiption'])); ?></p>
                       </p>
                     </div>
                   </div>
@@ -148,7 +147,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="modal fade" id="show-article<?php echo ($item['id']); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                      <div class="modal-header">
+                      <div class="modal-header modal-image">
                         <img src="items/<?php echo h($item['photo']); ?>" class="flex-item show-photo" alt="image">
                       </div>
                       </button>
@@ -158,10 +157,10 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <p class="item-date">
                           <?php echo date('y/m/d', strtotime(h($item['created_at']))); ?>
                         </p>
-                        <p><?php echo h($item['desceiption']); ?></p>
+                        <p><?php echo nl2br(h($item['desceiption'])); ?></p>
                         <div class="modal-footer">
-                          <a href="delete.php?id=<?= h($item['id']) ?>" class="btn btn-warning">削除</a>
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                          <a href="delete.php?id=<?= h($item['id']) ?>" class="btn btn-warning">Delete</a>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                       </div>
                     </div>
@@ -173,7 +172,6 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
           </div>
         </div>
       </div>
-    </div>
     <!-- ここからフッター -->
     <footer class="footer font-small">
       <div class="footer-copyright text-center py-3 footer-font">
@@ -200,7 +198,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </label>
             <div class="modal-footer">
               <input type="submit" value="Edit Image" class="btn ei-btn">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
           </form>
         </div>

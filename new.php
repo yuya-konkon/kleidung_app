@@ -5,6 +5,11 @@ require_once('functions.php');
 
 session_start();
 
+if (empty($_SESSION['id'])) {
+  header('Location: login.php');
+  exit;
+}
+
 $dbh = connectDb();
 // ユーザー情報の取得
 $sql = "SELECT* FROM users WHERE id = :id";
@@ -35,10 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $errors = [];
 
   if ($category_id == '') {
-    $errors[] = 'カテゴリーを選択してください。';
+    $errors[] = 'Category を選択してください。';
   }
   if ($gender_id == '') {
-    $errors[] = '性別を選択してください。';
+    $errors[] = 'Gender を選択してください。';
+  }
+
+  if ($image == '') {
+    $errors[] = 'Image を選択してください';
   }
 
   if ($image) {
@@ -149,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <hr>
                 <label for="selectImage" class="new-item-btn">
                   Item Select
-                  <input type='file' id='selectImage' name="item" class="new-input-file" required>
+                  <input type='file' id='selectImage' name="item" class="new-input-file">
                 </label>
                 <div class="form-group">
                   <label for="category_id" class="new-item-font">Category</label>
@@ -169,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <div>
                   <label for="desceiption" class="new-item-font">Comment</label>
-                  <textarea name="desceiption" cols="30" rows="5" class="form-control" required></textarea>
+                  <textarea name="desceiption" cols="30" rows="5" class="form-control"></textarea>
                 </div>
                 <input type="submit" value="New Post" class="NP-btn">
             </div>
@@ -178,14 +187,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ここからフッター -->
-  <footer class="footer font-small">
-    <div class="footer-copyright text-center py-3 footer-font">
-      &copy;Copyright © 2020 KleidunG.All rights reserved
-    </div>
-  </footer>
+    <!-- ここからフッター -->
+    <footer class="footer font-small">
+      <div class="footer-copyright text-center py-3 footer-font">
+        &copy;Copyright © 2020 KleidunG.All rights reserved
+      </div>
+    </footer>
   </div>
 
 </body>
